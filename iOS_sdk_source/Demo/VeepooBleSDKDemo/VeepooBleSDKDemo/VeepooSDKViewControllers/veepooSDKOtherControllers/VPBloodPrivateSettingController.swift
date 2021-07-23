@@ -8,6 +8,7 @@
 
 /*
  SDK1.7之后对此模块进行修改，因设备区别，有的是直接设置私人模式，有的需要动态校准，如果需要动态校准的设备，在动态校准过程中要保持正确的佩戴姿势，动态校准时间比较长，如果快的话30秒之内，如果慢的话大概要1-2分钟
+    .7 After this module is modified, due to the difference of the equipment, some are directly set to the private mode, and some require dynamic calibration. If the equipment needs to be dynamically calibrated, the correct wearing posture must be maintained during the dynamic calibration process. The dynamic calibration time is relatively long. If it's fast, within 30 seconds, if it's slow, it's probably 1-2 minutes
  */
 
 import UIKit
@@ -30,25 +31,25 @@ class VPBloodPrivateSettingController: UIViewController {
     
     @IBOutlet weak var calibrationProgressLabel: UILabel!
     
-    var isNew:Bool = false //是否是动态校准
+    var isNew:Bool = false //Whether it is dynamic calibration
     
     var privateBloodModel: VPDevicePrivateBloodModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "血压私人模式设置"
+        title = "Blood pressure private mode setting"
         
         var tbyte:[UInt8] = Array(repeating: 0x00, count: 20)
         VPBleCentralManage.sharedBleManager().peripheralModel.deviceFuctionData.copyBytes(to: &tbyte, count: tbyte.count)
-        if tbyte[1] != 1 {//先判断一下是否有这个功能
-            _ = AppDelegate.showHUD(message: "手环没有此功能", hudModel: MBProgressHUDModeText, showView: view)
+        if tbyte[1] != 1 {//First judge whether it has this function
+            _ = AppDelegate.showHUD(message: "The bracelet does not have this function", hudModel: MBProgressHUDModeText, showView: view)
             bloodSettingBtn.isEnabled = false
             return
         }
         
-        if tbyte[16] == 1 {//如果等于一就是要使用动态校准，否则就是普通模式设置
-            bloodSettingBtn.setTitle("动态校准", for: .normal)
-            bloodSettingBtn.setTitle("动态校准中", for: .disabled)
+        if tbyte[16] == 1 {//If it is equal to one, it is necessary to use dynamic calibration, otherwise it is the normal mode setting
+            bloodSettingBtn.setTitle("Dynamic calibration", for: .normal)
+            bloodSettingBtn.setTitle("Dynamic calibration", for: .disabled)
             calibrationProgressLabel.isHidden = false
             isNew = true
         }
@@ -58,27 +59,27 @@ class VPBloodPrivateSettingController: UIViewController {
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKSettingPersonalBlood(with: VPDevicePrivateBloodModel(), settingMode: .readFunctionState, successResult: { (devicePrivateModel) in
             weakSelf.privateBloodModel = devicePrivateModel
             if devicePrivateModel?.systolicPressure == 0 && devicePrivateModel?.diastolicPressure == 0 {
-                _ = AppDelegate.showHUD(message: "手环还没有设置此功能", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "The bracelet has not set this function", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             }else {//展示给用户当前手环的值
-                _ = AppDelegate.showHUD(message: "读取血压私人模式成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Read blood pressure private mode successfully", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                 weakSelf.systolicSlider.value = Float((devicePrivateModel?.systolicPressure)!)
                 weakSelf.diastolicSlider.value = Float((devicePrivateModel?.diastolicPressure)!)
                 weakSelf.bloodModeSegControl.selectedSegmentIndex = Int((devicePrivateModel?.privateMode)!)
-                weakSelf.systolicLabel.text = "高压:" + String((devicePrivateModel?.systolicPressure)!)
-                weakSelf.diastolicLabel.text = "低压:" + String((devicePrivateModel?.diastolicPressure)!)
-                weakSelf.modeLabel.text = devicePrivateModel?.privateMode == 0 ? "模式:通用" : "模式:私人"
+                weakSelf.systolicLabel.text = "high pressure:" + String((devicePrivateModel?.systolicPressure)!)
+                weakSelf.diastolicLabel.text = "Low pressure:" + String((devicePrivateModel?.diastolicPressure)!)
+                weakSelf.modeLabel.text = devicePrivateModel?.privateMode == 0 ? "Mode: General" : "Mode: Private"
             }
         }) { 
-            _ = AppDelegate.showHUD(message: "读取血压私人模式失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Failed to read blood pressure private mode", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        if isNew == false {//如果没有就不用取消
+        if isNew == false {//If not, no need to cancel
             return
         }
-        //退出界面的时候取消动态校准，校准过程中也可以取消
+        //Cancel dynamic calibration when exiting the interface, and it can also be canceled during calibration
 //        unowned let weakSelf = self
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKSettingPersonalBlood(with: privateBloodModel, settingMode: .settingFunctionCancel, successResult: { (devicePrivateModel) in
 //            guard let devicePrivateModel = devicePrivateModel else {
@@ -92,14 +93,14 @@ class VPBloodPrivateSettingController: UIViewController {
     @IBAction func settingBloodValueAction(_ sender: UISlider) {
         let bloodValue = UInt16(sender.value)
         if sender.tag == 0 {
-            systolicLabel.text = "高压:" + String(bloodValue)
+            systolicLabel.text = "High pressure:" + String(bloodValue)
         }else {
-            diastolicLabel.text = "低压:" + String(bloodValue)
+            diastolicLabel.text = "Low pressure:" + String(bloodValue)
         }
     }
     
     @IBAction func choiceBloodTestModeAction(_ sender: UISegmentedControl) {
-        modeLabel.text = bloodModeSegControl.selectedSegmentIndex == 0 ? "模式:通用" : "模式:私人"
+        modeLabel.text = bloodModeSegControl.selectedSegmentIndex == 0 ? "Mode: General" : "Mode: Private"
     }
     
     @IBAction func startSettingBloodModeAction(_ sender: UIButton) {
@@ -112,26 +113,26 @@ class VPBloodPrivateSettingController: UIViewController {
             guard let devicePrivateModel = devicePrivateModel else {
                 return
             }
-            if devicePrivateModel.settingState == 1 {//普通私人设置
-                _ = AppDelegate.showHUD(message: "设置血压私人模式成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            if devicePrivateModel.settingState == 1 {//Ordinary private settings
+                _ = AppDelegate.showHUD(message: "Set blood pressure private mode successfully", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                 sender.isEnabled = true
-            }else if devicePrivateModel.settingState == 6 {//动态校准中
-                weakSelf.calibrationProgressLabel.text = "动态校准进度:" + String(describing: devicePrivateModel.calibrationProgress) + "%"
-            }else if devicePrivateModel.settingState == 7 {//动态校准中
-                _ = AppDelegate.showHUD(message: "动态校准失败，请重试", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            }else if devicePrivateModel.settingState == 6 {//Dynamic calibration
+                weakSelf.calibrationProgressLabel.text = "Dynamic calibration progress:" + String(describing: devicePrivateModel.calibrationProgress) + "%"
+            }else if devicePrivateModel.settingState == 7 {//Dynamic calibration
+                _ = AppDelegate.showHUD(message: "Dynamic calibration failed, please try again", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                 sender.isEnabled = true
-            }else if devicePrivateModel.settingState == 8 {//动态校准中
-                _ = AppDelegate.showHUD(message: "动态校准成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
-                weakSelf.calibrationProgressLabel.text = "动态校准进度:100%"
+            }else if devicePrivateModel.settingState == 8 {//Dynamic calibration
+                _ = AppDelegate.showHUD(message: "Dynamic calibration succeeded", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                weakSelf.calibrationProgressLabel.text = "Dynamic calibration progress:100%"
                 sender.isEnabled = true
-            }else if devicePrivateModel.settingState == 9 {//设备端正在操作，校准失败
+            }else if devicePrivateModel.settingState == 9 {//The device is operating, calibration failed
                 sender.isEnabled = true
-                _ = AppDelegate.showHUD(message: "校准失败，校准中请勿操作设备", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Calibration failed, please do not operate the device during calibration", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             }
             
         }) {
             sender.isEnabled = true
-            _ = AppDelegate.showHUD(message: "设置血压私人模式失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Failed to set blood pressure private mode", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }
     }
     

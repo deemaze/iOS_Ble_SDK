@@ -19,7 +19,7 @@ class VPScanDeviceViewController: UIViewController , UITableViewDelegate , UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "扫描设备"
+        title = "Scanning device"
         view.backgroundColor = UIColor.white
         setScanDeviceViewControllerUI()
         
@@ -70,16 +70,22 @@ class VPScanDeviceViewController: UIViewController , UITableViewDelegate , UITab
         switch connectState {
         case .BlePoweredOff://蓝牙没有打开
             print("手机蓝牙没有打开")
+            print("Phone Bluetooth is not turned on")
         case .BleConnecting://蓝牙连接中
             print("蓝牙连接中")
+            print("Bluetooth connection")
         case .BleConnectSuccess://蓝牙连接成功
             print("蓝牙连接成功")
+            print("Bluetooth connection is successful")
         case .BleConnectFailed://蓝牙连接失败
             print("蓝牙连接失败")
+            print("Bluetooth connection failed")
         case .BleVerifyPasswordSuccess://验证密码成功,返回上一级
             print("验证密码成功")
+            print("Verify the password is successful")
         case .BleVerifyPasswordFailure://验证密码失败
             print("验证密码失败")
+            print("Failed to verify password")
         }
     }
     

@@ -27,12 +27,12 @@ class VPMarketDialViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "市场表盘"
+        title = "Market dial"
         
-        // 照片表盘标志位
+        // Photo dial flag
         supportMarketDialFunction = (VPBleCentralManage.sharedBleManager()?.peripheralModel.marketDialCount)! > 0
         if !supportMarketDialFunction {
-            _ = AppDelegate.showHUD(message: "不支持市场表盘功能", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "Does not support the market watch face function", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         
@@ -43,12 +43,12 @@ class VPMarketDialViewController: UIViewController {
         
         marketDialManager = VPMarketDialManager.share()
     }
-    // MARK: - 设备屏幕读取与切换
+    // MARK: - Device screen reading and switching
     
-    // 读取设备当前显示的表盘
-    // settingMode: 1代表设置，2代表读取
-    // dialType: 0 默认表盘 1 市场表盘 2 照片表盘
-    // screenStyle 市场表盘/照片表盘从1开始，默认表盘的从0开始
+    // Read the watch face currently displayed by the device
+    // settingMode: 1Stands for setting, 2 stands for read
+    // dialType: 0 Default watch face 1 Market watch face 2 Photo watch face
+    // screenStyle The market dial/photo dial starts from 1, the default dial starts from 0
     @IBAction func readDeviceScreenStyleClick(_ sender: UIButton) {
         VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSDKSettingDeviceScreenStyle(0, settingMode: 2, dialType: .market, result: { [weak self](dialType, screenStyle, settingSuccess) in
 //            print("读取>> screenStyle: \(screenStyle), settingSuccess:\(settingSuccess)")
@@ -61,15 +61,15 @@ class VPMarketDialViewController: UIViewController {
         VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSDKSettingDeviceScreenStyle(1, settingMode: 1, dialType: .market, result: { [weak self](dialType, screenStyle, settingSuccess) in
 //            print("设置>> screenStyle: \(screenStyle), settingSuccess:\(settingSuccess)")
             if !settingSuccess && support {
-                // 设备支持市场表盘, 但未传输过表盘 先传输一次市场表盘中的表盘
-                _ = AppDelegate.showHUD(message: "设备支持市场表盘, 但未传输过表盘", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
+                // The device supports the market watch face, but the watch face has not been transferred. First transfer the watch face in the market watch face
+                _ = AppDelegate.showHUD(message: "The device supports the market watch face, but the watch face has not been transferred", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
             }else{
                 self?.readDeviceScreenButton.sendActions(for: .touchUpInside)
             }
         })
     }
     
-    // MARK: - 市场表盘信息读取、UI数据传输
+    // MARK: - Market dial information reading, UI data transmission
     
     @IBAction func readDeviceMarketDialInfoClick(_ sender: UIButton) {
         VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSDK_dialChannel(with: .read, dialType: .market, photoDialModel: nil, result: { [weak self](photoDialModel, deviceMarketDialModel, error) in
@@ -79,10 +79,10 @@ class VPMarketDialViewController: UIViewController {
         }, transformProgress: nil)
     }
     
-    // 获取服务器关于本设备的所有市场表盘模型对象 fileUrl 为要传输给设备的UI文件，previewUrl 为预览图
+    // Get all the market watch face model objects of the server about this device. fileUrl is the UI file to be transferred to the device, and previewUrl is the preview image
     @IBAction func getServerMarketDialsClick(_ sender: UIButton) {
         if deviceMarketDialModel == nil {
-            _ = AppDelegate.showHUD(message: "请先获取设备市场表盘信息", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "Please get the device market dial information first", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
 
@@ -103,29 +103,29 @@ class VPMarketDialViewController: UIViewController {
         }
     }
     
-    // 下载选择的模型中UI传输文件 download file
+    // Download the UI transfer file in the selected model download file
     @IBAction func downloadTransferBinFileClick(_ sender: UIButton) {
         if marketDialArray.count == 0 {
-            _ = AppDelegate.showHUD(message: "请先获取服务器市场表盘", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "Please get the server market dial first", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
-        // 测试 第一个 验证效果请自行拿 marketDialArray.first.previewUrl 查看预览图
+        // Test the first one to verify the effect, please take marketDialArray.first.previewUrl to view the preview
         marketDialManager.downloadMarketDialBinFile(with: marketDialArray.first!, deviceMarketDialModel: deviceMarketDialModel) { [weak self](filePath) in
             self?.filePath = filePath!
-            print("下载成功!")
+            print("download successful!")
         } failure: { (error, code) in
             
         }
     }
     
-    // 传输下载成功的 bin 文件到设备中
+    // Transfer the successfully downloaded bin file to the device
     @IBAction func transferMarketDialToDeviceClick(_ sender: UIButton) {
         if filePath == nil {
-           _ = AppDelegate.showHUD(message: "请先下载表盘文件", hudModel: MBProgressHUDModeText, showView: view)
+           _ = AppDelegate.showHUD(message: "Please download the watch face file first", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         marketDialManager.startTransfer(withFilePath: filePath) { (progress) in
-            print("进度: \(progress * 100) %")
+            print("schedule: \(progress * 100) %")
         } failure: { (error) in
             if error != nil{
                 print(error! as NSError)

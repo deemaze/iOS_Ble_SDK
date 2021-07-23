@@ -18,7 +18,7 @@ class VPMapGPSTagViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "GPS显示"
+        self.title = "GPS display"
         
         VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSDK_readDeviceRTGPSData(withState: true, result: { [weak self](state, model) in
             if state && model != nil {
@@ -35,7 +35,7 @@ class VPMapGPSTagViewController: UIViewController {
             }
         })
         
-        let item = UIBarButtonItem.init(title: "坐标转换", style: UIBarButtonItemStyle.plain, target: self, action: #selector(GPSChange))
+        let item = UIBarButtonItem.init(title: "Coordinate conversion", style: UIBarButtonItemStyle.plain, target: self, action: #selector(GPSChange))
         self.navigationItem.rightBarButtonItem = item
     }
     
@@ -45,7 +45,7 @@ class VPMapGPSTagViewController: UIViewController {
     
     @objc func GPSChange() -> Void {
         coordinateChange = !coordinateChange
-        tipLabel.text = "转换坐标:  \(coordinateChange ? "是" : "否")"
+        tipLabel.text = "Convert coordinates:  \(coordinateChange ? "Yes" : "No")"
     }
     
     func changeCoordinate(coordinate : CLLocationCoordinate2D) -> CLLocationCoordinate2D {

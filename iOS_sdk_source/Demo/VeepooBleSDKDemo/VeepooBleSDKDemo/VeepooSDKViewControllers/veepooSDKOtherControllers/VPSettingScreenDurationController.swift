@@ -16,21 +16,21 @@ class VPSettingScreenDurationController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //1.先判断有没有此功能
+        //1.First judge whether there is this function
         let type = VPBleCentralManage
             .sharedBleManager().peripheralModel.screenDurationType
         if type == 0 {
-            _ = AppDelegate.showHUD(message: "该设备没有亮屏时长设置功能", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "The device does not have the function of setting the screen on time", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
-        //2.读取当前设备亮屏时长的信息
+        //2.Read the information of the current device's screen on time
         VPBleCentralManage.sharedBleManager()
             .peripheralManage.veepooSDKSettingScreenDuration(VPScreenDurationModel(), settingMode: 2, successResult: {[weak self] (durationModel) in
-                _ = AppDelegate.showHUD(message: "读取信息成功", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
+                _ = AppDelegate.showHUD(message: "Read the information successfully", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
                 self?.durationModel = durationModel!
                 self?.updateUI()
         }) {[weak self] in
-                _ = AppDelegate.showHUD(message: "读取信息失败", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
+                _ = AppDelegate.showHUD(message: "Failed to read information", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
         }
     }
 
@@ -47,9 +47,9 @@ class VPSettingScreenDurationController: UIViewController {
     @IBAction func startSetting(_ sender: UIButton) {
         VPBleCentralManage.sharedBleManager()
             .peripheralManage.veepooSDKSettingScreenDuration(durationModel, settingMode: 1, successResult: {[weak self] (durationModel) in
-                _ = AppDelegate.showHUD(message: "设置成功", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
+                _ = AppDelegate.showHUD(message: "Set successfully", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
             }) {[weak self] in
-                _ = AppDelegate.showHUD(message: "设置失败", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
+                _ = AppDelegate.showHUD(message: "Setup failed", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
         }
     }
 }

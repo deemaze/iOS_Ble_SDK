@@ -24,8 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = mainNavi;
         
         window?.makeKeyAndVisible()
-        //先初始化VPBleCentralManage，也可以在主控制器中初始化，总之就是在使用蓝牙功能前初始化
-//        let veepooBleManager: VPBleCentralManage = VPBleCentralManage.sharedBleManager()
+        //Initialize VPBleCentralManage first, or initialize in the main controller, in short, initialize before using the Bluetooth function
+        let veepooBleManager: VPBleCentralManage = VPBleCentralManage.sharedBleManager()
         
         let centralManagerIdentifiers = launchOptions?[UIApplicationLaunchOptionsKey.bluetoothCentrals]
         print(centralManagerIdentifiers ?? [])

@@ -7,14 +7,13 @@
 //
 
 /*
-  新闹钟最多可设置20组，自己在做的时候，超过20组的时候提示用户不要继续添加，设
-  备上存储闹钟排序方式是按照model的ID进行排序的，SDK中返回的是用户设置先后的顺序（如果用户卸载App了，第一次读取排序和设备端一致）
-  
-  我这边显示的是没有区分单次和重复星期的，开发的时候可以把重复的和单次的分两个区显示，可以参考我们的H Band，重新分开的时候，在对返回的数组进行处理一下就可以了，这里就不多说了
+ The new alarm clock can be set up to 20 groups. When you are doing it, you will be reminded not to continue adding it when it exceeds 20 groups.
+    The sorting method of alarm clocks stored on the device is sorted according to the ID of the model. The SDK returns the order set by the user (if the user uninstalls the App, the first read sort is the same as the device side)
+   
+    What I show here does not distinguish between single and repeated weeks. During development, you can display the repeated and single in two areas. You can refer to our H Band. When re-dividing, perform the returned array Just deal with it, I won’t say more here
  */
 
-//此demo编写了所有闹钟的逻辑，包括增 删 改 查，侧滑可以删除，1.7版本单次日期选择那里我偷懒了，先只写个随机的，开发者明白啥意思就行了，有点写累了😰，下个版本有时间在把逻辑写全吧，看心情😀
-
+//This demo compiles the logic of all alarm clocks, including adding, deleting, modifying and checking, and sliding can be deleted. In the 1.7 version, I was lazy for a single date selection. First, I only write a random one. The developer can understand what it means, and I am a little tired of writing 😰 , The next version has time to write all the logic, depending on the mood 😀
 import UIKit
 
 class VPDeviceNewAlarmController: UIViewController,UITableViewDelegate,UITableViewDataSource {
@@ -27,22 +26,22 @@ class VPDeviceNewAlarmController: UIViewController,UITableViewDelegate,UITableVi
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "新闹钟设置"
+        title = "New alarm setting"
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
         self.setDeviceNewAlarmControllerUI()
         
         if VPBleCentralManage.sharedBleManager().peripheralModel.deviceFuctionData == nil {
-            _ = AppDelegate.showHUD(message: "手环没有新闹钟功能", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "The bracelet has no new alarm function", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         var tbyte:[UInt8] = Array(repeating: 0x00, count: 20)
         VPBleCentralManage.sharedBleManager().peripheralModel.deviceFuctionData.copyBytes(to: &tbyte, count: tbyte.count)
-        if !(tbyte[17] != 1 || tbyte[17] != 2 || tbyte[17] != 3 || tbyte[17] != 4) {//先判断一下是否有这个功能
-            _ = AppDelegate.showHUD(message: "手环没有新闹钟功能", hudModel: MBProgressHUDModeText, showView: view)
+        if !(tbyte[17] != 1 || tbyte[17] != 2 || tbyte[17] != 3 || tbyte[17] != 4) {//First judge whether it has this function
+            _ = AppDelegate.showHUD(message: "The bracelet has no new alarm function", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
-        //先读取一下设备的闹钟
+        //First read the alarm clock of the device
         self.readOrSettingAlarmClock(settingAlarmModel: VPDeviceNewAlarmModel(), settingMode: 2)
     }
 
@@ -58,9 +57,9 @@ class VPDeviceNewAlarmController: UIViewController,UITableViewDelegate,UITableVi
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addAlarmClock))
     }
     
-    @objc func openOrCloseAlarmClock(sender: UISwitch) {//对单组闹钟进行开或者关，只对重复星期的闹钟有效
+    @objc func openOrCloseAlarmClock(sender: UISwitch) {//Turn on or off a single set of alarms, only valid for alarms that repeat the week
         let alarmModel = deviceAlarmArray[sender.tag] as? VPDeviceNewAlarmModel
-        //下边copy一个模型，以免设置失败后，Model改变，页面不能刷新到正确状态
+        //Copy a model below, so as not to change the model after the setting fails, the page cannot be refreshed to the correct state
         let settingModel = alarmModel?.copy() as? VPDeviceNewAlarmModel
         settingModel?.alarmState = sender.isOn ? "1" : "0"
         
@@ -69,12 +68,12 @@ class VPDeviceNewAlarmController: UIViewController,UITableViewDelegate,UITableVi
     
     @objc func addAlarmClock()  {//
         if deviceAlarmArray.count >= 20 {
-            _ = AppDelegate.showHUD(message: "设备最多支持20组闹钟", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "The device supports up to 20 groups of alarms", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         let editController = VPEditNewAlarmController(nibName: "VPEditNewAlarmController", bundle: Bundle.main)
         editController.isAdd = true
-        //初始化的Model，SDK中时间和ID都已经给默认好了
+        //The initialized Model, the time and ID in the SDK have been defaulted
         let addAlarmModel = VPDeviceNewAlarmModel()
         editController.alarmModel = addAlarmModel
         unowned let weakSelf = self
@@ -84,28 +83,28 @@ class VPDeviceNewAlarmController: UIViewController,UITableViewDelegate,UITableVi
         navigationController?.pushViewController(editController, animated: true)
     }
 
-    func readOrSettingAlarmClock(settingAlarmModel: VPDeviceNewAlarmModel, settingMode:UInt) {//设置或者读取新闹钟
+    func readOrSettingAlarmClock(settingAlarmModel: VPDeviceNewAlarmModel, settingMode:UInt) {//Set or read a new alarm
         unowned let weakSelf = self
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKSettingDeviceNewAlarm(with: settingAlarmModel, settingMode: settingMode, successResult: { (alarmArray) in
             print(alarmArray?.count ?? "")
             weakSelf.deviceAlarmArray = alarmArray!
             weakSelf.deviceNewAlarmTableView?.reloadData()
-            var tip = "读取成功"
+            var tip = "Read successfully"
             if settingMode == 0 {
-                tip = "删除成功"
+                tip = "Successfully deleted"
             }else if settingMode == 1 {
-                tip = "设置成功"
+                tip = "Set successfully"
             }
             _ = AppDelegate.showHUD(message: tip, hudModel: MBProgressHUDModeText, showView: UIApplication.shared.keyWindow!)
             if weakSelf.navigationController?.topViewController is VPEditNewAlarmController {
                 _ = weakSelf.navigationController?.popViewController(animated: true)
             }
         }) {
-            var tip = "读取失败"
+            var tip = "Read failed"
             if settingMode == 0 {
-                tip = "删除失败"
+                tip = "Failed to delete"
             }else if settingMode == 1 {
-                tip = "设置失败"
+                tip = "Setup failed"
             }
             _ = AppDelegate.showHUD(message: tip, hudModel: MBProgressHUDModeText, showView: UIApplication.shared.keyWindow!)
             weakSelf.deviceNewAlarmTableView?.reloadData()

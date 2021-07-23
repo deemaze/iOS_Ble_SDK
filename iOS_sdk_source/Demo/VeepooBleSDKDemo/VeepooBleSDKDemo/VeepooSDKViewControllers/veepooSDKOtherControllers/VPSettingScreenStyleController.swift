@@ -11,26 +11,26 @@ import UIKit
 class VPSettingScreenStyleController: UIViewController ,UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var screenTableView: UITableView!
-    var styleCount = 0 //有几种屏幕样式设置
+    var styleCount = 0 //There are several screen style settings
 
-    var screenStyle = 100 //屏幕的样式，默认没有
+    var screenStyle = 100 //The style of the screen, no default
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "彩屏样式设置"
+        title = "Color screen style setting"
         // Do any additional setup after loading the view.
         var tbyte:[UInt8] = Array(repeating: 0x00, count: 20)
         VPBleCentralManage.sharedBleManager().peripheralModel.deviceFuctionDataTwo.copyBytes(to: &tbyte, count: tbyte.count)
         styleCount = Int(tbyte[6])
         if styleCount == 0 {
-            _ = AppDelegate.showHUD(message: "没有屏幕样式设置功能", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "No screen style setting function", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKSettingDeviceScreenStyle(0, settingMode: 2) {[weak self] (screenStyle, settingSuccess) in
             if settingSuccess == true {
                 self?.screenStyle = Int(screenStyle)
             }else {
-                _ = AppDelegate.showHUD(message: "读取失败", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
+                _ = AppDelegate.showHUD(message: "Read failed", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
             }
         }
     }
@@ -51,9 +51,9 @@ class VPSettingScreenStyleController: UIViewController ,UITableViewDelegate, UIT
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .value1, reuseIdentifier: "Cell")
         if indexPath.row == 0 {
-            cell.textLabel?.text = "默认样式"
+            cell.textLabel?.text = "Default style"
         }else {
-            cell.textLabel?.text = "屏幕样式" + String(indexPath.row)
+            cell.textLabel?.text = "Screen style" + String(indexPath.row)
         }
         if indexPath.row == screenStyle {
             cell.detailTextLabel?.text = "✔︎"
@@ -69,7 +69,7 @@ class VPSettingScreenStyleController: UIViewController ,UITableViewDelegate, UIT
             if settingSuccess == true {
                 weakSelf.screenStyle = Int(screenStyle)
             }else {
-                _ = AppDelegate.showHUD(message: "设置失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Setup failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             }
             tableView.reloadData()
         }

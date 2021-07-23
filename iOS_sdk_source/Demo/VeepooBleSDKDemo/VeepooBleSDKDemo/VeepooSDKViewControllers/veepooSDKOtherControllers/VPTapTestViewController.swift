@@ -12,10 +12,10 @@ class VPTapTestViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "敲击测试"
+        title = "Knock test"
         VPBleCentralManage.sharedBleManager()
             .peripheralManage.receiveTapDeviceAlarm = { type in
-                _ = AppDelegate.showHUD(message: type == 1 ? "接收到单击指令" : "接收到双击指令", hudModel: MBProgressHUDModeText, showView: UIApplication.shared.keyWindow!)
+                _ = AppDelegate.showHUD(message: type == 1 ? "Click command received" : "Double click command received", hudModel: MBProgressHUDModeText, showView: UIApplication.shared.keyWindow!)
         }
     }
 

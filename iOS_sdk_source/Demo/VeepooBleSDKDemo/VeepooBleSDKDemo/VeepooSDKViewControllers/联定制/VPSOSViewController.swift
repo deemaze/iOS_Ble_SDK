@@ -20,33 +20,33 @@ class VPSOSViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        title = "SOS调试"
+        title = "SOS debugging"
         bleManager.peripheralManage.receiveSoldierFeedback = {[weak self] in
-            self?.stateLabel.text = "收到设备发送的SOS求救信息"
+            self?.stateLabel.text = "Receive the SOS distress message sent by the device"
         }
     }
     
     @IBAction func sendCommand(_ sender: UIButton) {
         if bleManager.isConnected == false {
-            _ = AppDelegate.showHUD(message: "设备未连接", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "Device not connected", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         bleManager.peripheralManage.veepooSDKSend {[weak self] (success) in
-            self?.stateLabel.text = success ? "发送成功" : "发送失败"
+            self?.stateLabel.text = success ? "Send successfully" : "Failed to send"
         }
     }
     
     @IBAction func sendMessage(_ sender: UIButton) {
         if bleManager.isConnected == false {
-            _ = AppDelegate.showHUD(message: "设备未连接", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "Device not connected", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         if messageTextField.text?.count == 0 {
-            _ = AppDelegate.showHUD(message: "请输入发送信息", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "Please enter the sending information", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         bleManager.peripheralManage.veepooSDKSend(toSoldierSpecialTask: 0xFF, taskMessage: messageTextField.text) {[weak self] (success) in
-            self?.stateLabel.text = success ? "发送成功" : "发送失败"
+            self?.stateLabel.text = success ? "Send successfully" : "Failed to send"
         }
     }
     

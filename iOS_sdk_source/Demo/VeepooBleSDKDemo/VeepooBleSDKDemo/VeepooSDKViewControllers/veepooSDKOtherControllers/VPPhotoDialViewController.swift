@@ -22,39 +22,39 @@ class VPPhotoDialViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "照片表盘"
-        // 照片表盘标志位
+        title = "Photo dial"
+        // Photo dial flag
         supportPhotoDialFunction = (VPBleCentralManage.sharedBleManager()?.peripheralModel.photoDialCount)! > 0
         if !supportPhotoDialFunction {
-            _ = AppDelegate.showHUD(message: "不支持照片表盘功能", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "Does not support photo watch face function", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         self.readDeviceScreenButton.sendActions(for: .touchUpInside)
         self.readPhotoDialDetailButton.sendActions(for: .touchUpInside)
     }
-    // MARK: - 设备屏幕读取与切换
+    // MARK: - Device screen reading and switching
     
-    // 读取设备当前显示的表盘
-    // dialType: 0 默认表盘 1 市场表盘 2 照片表盘
-    // screenStyle 市场表盘/照片表盘从1开始，默认表盘的从0开始
+    // Read the watch face currently displayed by the device
+    // dialType: 0 Default watch face 1 Market watch face 2 Photo watch face
+    // screenStyle The market dial/photo dial starts from 1, the default dial starts from 0
     @IBAction func readDeviceScreenStyleClick(_ sender: UIButton) {
         VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSDKSettingDeviceScreenStyle(0, settingMode: 2, dialType: .photo, result: { [weak self](dialType, screenStyle, settingSuccess) in
-            print("读取>> screenStyle: \(screenStyle), settingSuccess:\(settingSuccess)")
+            print("Read>> screenStyle: \(screenStyle), settingSuccess:\(settingSuccess)")
             self?.dialTypeLabel.text = "\(dialType.rawValue) - \(screenStyle)"
         })
     }
     
-    // 设置设备表盘为照片表盘
+    // Set the device watch face to the photo watch face
     @IBAction func setScreenStyleToPhotoDial(_ sender: UIButton) {
         VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSDKSettingDeviceScreenStyle(1, settingMode: 1, dialType: .photo, result: { [weak self](dialType, screenStyle, settingSuccess) in
-            print("设置>> screenStyle: \(screenStyle), settingSuccess:\(settingSuccess)")
+            print("Set up>> screenStyle: \(screenStyle), settingSuccess:\(settingSuccess)")
             self?.readDeviceScreenButton.sendActions(for: .touchUpInside)
         })
     }
     
-    // MARK: - 照片表盘传输、元素设置、效果View显示
-    // 读取照片表盘信息，获取VPPhotoDialModel模型
-    // SDK使用者请自行持有该模型，设置与显示效果View都依据读取上来的模型
+    // MARK: - Photo dial transmission, element setting, effect View display
+    // Read the photo dial information and get the VPPhotoDialModel model
+    // SDK users should hold the model by themselves, and the settings and display effects of the View are based on the model read.
     @IBAction func readPhotoDialDetailInfo(_ sender: UIButton) {
         VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSDK_dialChannel(with: .read, dialType: .photo, photoDialModel: nil, result: { [weak self](photoDialModel, deviceMarketDialModel, error) in
             self?.photoDialModel = photoDialModel! as VPPhotoDialModel
@@ -68,7 +68,7 @@ class VPPhotoDialViewController: UIViewController {
 //        self.photoDialModel.timePosition = .top
         self.photoDialModel.setColor = "00FF00"
         self.photoDialModel.isDefaultBG = true
-        self.photoDialModel.transformImage = nil // transformImage必须为空
+        self.photoDialModel.transformImage = nil // transformImage must be empty
         VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSDK_dialChannel(with: .setupPhotoDial, dialType: .photo, photoDialModel: self.photoDialModel, result: { (photoDialModel, deviceMarketDialModel, error) in
             if error != nil {
                 print(photoDialModel! as VPPhotoDialModel)
@@ -83,7 +83,7 @@ class VPPhotoDialViewController: UIViewController {
         }
 //        self.photoDialModel.timePosition = .bottom
         self.photoDialModel.setColor = "FF0000"
-        // 传输的图片宽高必须与屏幕的宽高一致 请注意⚠️分辨率为显示分辨率，即1x
+        // The width and height of the transmitted picture must be consistent with the width and height of the screen. Please note that the resolution is the display resolution, namely 1x
         var image:UIImage!
         switch self.photoDialModel.screenType {
         // 240*240
@@ -114,7 +114,7 @@ class VPPhotoDialViewController: UIViewController {
         VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSDK_dialChannel(with: .setupPhotoDial, dialType: .photo, photoDialModel: self.photoDialModel, result: { ( photoDialModel, deviceMarketDialModel, error) in
             print(error! as NSError)
         }, transformProgress: { (progress) in
-            print("进度：\(progress * 100) %")
+            print("schedule：\(progress * 100) %")
         })
     }
     var timeIndex:UInt = 1
@@ -125,17 +125,17 @@ class VPPhotoDialViewController: UIViewController {
             photoDialView.removeFromSuperview()
         }
         timeIndex += 1
-        // 圆屏 测试
+        // Round screen test
         if timeIndex > 3 {
-            timeIndex = 1 // 圆屏 从1 开始
+            timeIndex = 1 // Round screen starting from 1
         }
         
-        // 方屏 测试
+        // Square screen test
 //        if timeIndex > 7 || timeIndex < 4 {
-//            timeIndex = 4 // 方屏从 4 开始
+//            timeIndex = 4 // Square screen starts from 4
 //        }
         
-        // 元素轮训
+        // Elemental Training
         topAndBottomIndex += 1
         if topAndBottomIndex > 8 {
             topAndBottomIndex = 0

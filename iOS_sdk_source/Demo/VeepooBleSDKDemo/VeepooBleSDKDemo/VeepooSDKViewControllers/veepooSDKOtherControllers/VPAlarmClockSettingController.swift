@@ -22,28 +22,28 @@ class VPAlarmClockSettingController: UIViewController , UITableViewDelegate , UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "闹钟设置"
+        title = "Alarm setting"
         view.backgroundColor = UIColor.white
         
         var tbyte:[UInt8] = Array(repeating: 0x00, count: 20)
         VPBleCentralManage.sharedBleManager().peripheralModel.deviceFuctionData.copyBytes(to: &tbyte, count: tbyte.count)
-        if tbyte[17] == 0xFE {//0xFE 表示手环端无闹钟
-            _ = AppDelegate.showHUD(message: "手环没有闹钟功能", hudModel: MBProgressHUDModeText, showView: view)
+        if tbyte[17] == 0xFE {//0xFE Indicates that there is no alarm clock on the wristband
+            _ = AppDelegate.showHUD(message: "The bracelet does not have an alarm clock function", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         
         setAlarmClockControllerUI()
         
-        //闹钟设置也是以手环为主，要先读取再去设置，下边是读取闹钟
+        //The alarm clock setting is also based on the bracelet. You must read it first and then set it. The following is to read the alarm clock.
         unowned let weakSelf = self
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKSettingDeviceAlarm(withAlarmModel1: VPDeviceAlarmModel(), alarmModel2: VPDeviceAlarmModel(), alarmModel3: VPDeviceAlarmModel(), settingMode: VPOperationAlarmMode(rawValue: 6)!, successResult: { (alarmModel1, alarmModel2, alarmModel3) in
             weakSelf.alarmModelArray.append(alarmModel1!)
             weakSelf.alarmModelArray.append(alarmModel2!)
             weakSelf.alarmModelArray.append(alarmModel3!)
             weakSelf.alarmClockTableView?.reloadData()
-            _ = AppDelegate.showHUD(message: "读取成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Read successfully", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }) {
-            _ = AppDelegate.showHUD(message: "读取失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Read failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }
         
     }
@@ -62,19 +62,19 @@ class VPAlarmClockSettingController: UIViewController , UITableViewDelegate , UI
         
         let rightBtn = UIButton(type: .custom)
         rightBtn.frame = CGRect(x: 0, y: 0, width: 40, height: 38)
-        rightBtn.setTitle("设置", for: .normal)
+        rightBtn.setTitle("Set up", for: .normal)
         rightBtn.setTitleColor(UIColor.blue, for: .normal)
         rightBtn.addTarget(self, action: #selector(settingAlarmAction), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBtn)
     }
     
-    @objc func settingAlarmAction() {//开始设置闹钟
-        //每次设置闹钟都要把三组闹钟值都重新设置
+    @objc func settingAlarmAction() {//Start setting the alarm
+        //Every time you set an alarm, you must reset the three sets of alarm values
         unowned let weakSelf = self
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKSettingDeviceAlarm(withAlarmModel1: alarmModelArray[0], alarmModel2: alarmModelArray[1], alarmModel3: alarmModelArray[2], settingMode: VPOperationAlarmMode(rawValue: 1)!, successResult: { (alarmModel1, alarmModel2, alarmModel3) in
-            _ = AppDelegate.showHUD(message: "设置闹钟成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Set alarm successfully", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }) {
-            _ = AppDelegate.showHUD(message: "设置闹钟失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Failed to set alarm", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }
     }
     
@@ -110,14 +110,14 @@ class VPAlarmClockSettingController: UIViewController , UITableViewDelegate , UI
         cell?.accessoryType = .disclosureIndicator
         
         guard alarmModelArray.count == 3 else {
-            cell?.textLabel?.text = "闹钟" + String(indexPath.row + 1)
+            cell?.textLabel?.text = "Alarm clock" + String(indexPath.row + 1)
             alarmClockSwitch.isEnabled = false//为1即为开
             return cell!
         }
         
         let alarmModel = alarmModelArray[indexPath.row]
         
-        cell?.textLabel?.text = "闹钟" + String(indexPath.row + 1) + ": " + String.init(format: "%02u", alarmModel.alarmHour) + ":" + String.init(format: "%02u", alarmModel.alarmMinute)
+        cell?.textLabel?.text = "Alarm clock" + String(indexPath.row + 1) + ": " + String.init(format: "%02u", alarmModel.alarmHour) + ":" + String.init(format: "%02u", alarmModel.alarmMinute)
         alarmClockSwitch.isOn = alarmModel.alarmState == 1
         return cell!
     }

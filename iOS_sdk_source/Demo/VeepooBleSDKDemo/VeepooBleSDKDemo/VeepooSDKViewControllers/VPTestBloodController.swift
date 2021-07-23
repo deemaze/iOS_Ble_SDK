@@ -27,7 +27,7 @@ class VPTestBloodController: UIViewController,UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "血压"
+        title = "blood pressure"
         // Do any additional setup after loading the view.
         obtainOneDayBloodData()
     }
@@ -47,40 +47,40 @@ class VPTestBloodController: UIViewController,UITableViewDelegate, UITableViewDa
         var tbyte:[UInt8] = Array(repeating: 0x00, count: 20)
         VPBleCentralManage.sharedBleManager().peripheralModel.deviceFuctionData.copyBytes(to: &tbyte, count: tbyte.count)
         if tbyte[1] != 1 {//先判断一下是否有这个功能
-            _ = AppDelegate.showHUD(message: "手环没有血压功能", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "The bracelet has no blood pressure function", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
-            systolicLabel.text = "高压:0"
-            diastolicLabel.text = "低压:0"
-            testProgressLabel.text = "测试进度:0%"
+            systolicLabel.text = "High pressure:0"
+            diastolicLabel.text = "Low pressure:0"
+            testProgressLabel.text = "Test progess:0%"
         }
         
         unowned let weakSelf = self
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKTestBloodStart(sender.isSelected, testMode: 0) { (testBloodState, progress, systolic, diastolic) in
             if sender.isSelected {
-                weakSelf.testProgressLabel.text = "测试进度:" + String(progress) + "%"
-                weakSelf.systolicLabel.text = "高压:" + String(systolic)
-                weakSelf.diastolicLabel.text = "低压:" + String(diastolic)
+                weakSelf.testProgressLabel.text = "Test progress:" + String(progress) + "%"
+                weakSelf.systolicLabel.text = "High pressure:" + String(systolic)
+                weakSelf.diastolicLabel.text = "Low pressure:" + String(diastolic)
                 switch testBloodState {
                 case .testing://正在测试中
-                    print("正在测试中")
+                    print("We are tested")
                 case .deviceBusy:
-                    _ = AppDelegate.showHUD(message: "设备正忙，结束测试", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                    _ = AppDelegate.showHUD(message: "The device is busy, end the test", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
                 case .testFail:
-                    _ = AppDelegate.showHUD(message: "测试失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                    _ = AppDelegate.showHUD(message: "Test failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
                 case .testInterrupt:
-                    _ = AppDelegate.showHUD(message: "人为结束测试", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                    _ = AppDelegate.showHUD(message: "Artificial end of the test", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
                 case .complete:
-                    _ = AppDelegate.showHUD(message: "测试已经完成", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                    _ = AppDelegate.showHUD(message: "The test has been completed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
                 case .noFunction:
-                    _ = AppDelegate.showHUD(message: "设备暂时没有此功能", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                    _ = AppDelegate.showHUD(message: "The device does not have this function temporarily", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
                 }
             }

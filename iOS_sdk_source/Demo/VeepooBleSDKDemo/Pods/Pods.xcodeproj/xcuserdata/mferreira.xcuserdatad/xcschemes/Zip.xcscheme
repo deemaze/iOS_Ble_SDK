@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "67CB1CA61E52D26E00805649"
-               BuildableName = "VeepooBleSDKDemo.app"
-               BlueprintName = "VeepooBleSDKDemo"
-               ReferencedContainer = "container:VeepooBleSDKDemo.xcodeproj">
+               BlueprintIdentifier = "31708EE6929C61C0EDA6F5DAE3AF9DB7"
+               BuildableName = "Zip.framework"
+               BlueprintName = "Zip"
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -40,16 +40,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "67CB1CA61E52D26E00805649"
-            BuildableName = "VeepooBleSDKDemo.app"
-            BlueprintName = "VeepooBleSDKDemo"
-            ReferencedContainer = "container:VeepooBleSDKDemo.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -57,16 +47,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "67CB1CA61E52D26E00805649"
-            BuildableName = "VeepooBleSDKDemo.app"
-            BlueprintName = "VeepooBleSDKDemo"
-            ReferencedContainer = "container:VeepooBleSDKDemo.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

@@ -58,6 +58,7 @@ class VPRootViewController: UIViewController {
         self.setRootViewControllerNaviItemUI()
         
         //从2.0之后，要多加一步操作,下边两句任选其一，第一个是已经封装了SDK的，第二种是没有封装到数据库的，优点是自己对数据进行操作比较灵活
+        // After 2.0, you need to add one more step. Choose one of the following two sentences. The first one is that the SDK has been packaged, and the second one is not packaged in the database. The advantage is that it is more flexible to operate on the data.
         VPBleCentralManage.sharedBleManager().isLogEnable = true
         VPBleCentralManage.sharedBleManager().peripheralManage = VPPeripheralManage.shareVPPeripheralManager()
 //        VPBleCentralManage.sharedBleManager().peripheralManage = VPPeripheralAddManage.shareVPPeripheralManager()
@@ -65,17 +66,22 @@ class VPRootViewController: UIViewController {
         
         unowned let weakSelf = self
         //监听手机系统蓝牙状态改变
+        // Monitor the Bluetooth status change of the mobile phone system 
         veepooBleManager.vpBleCentralManageChangeBlock = {(centralManagerState: VPCentralManagerState) -> Void
             in
             switch centralManagerState {
             case .poweredOff: //系统蓝牙关闭
                 _ = AppDelegate.showHUD(message: "检测到系统蓝牙关闭", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "System Bluetooth is off detected", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             case .poweredOn://系统蓝牙打开
                 _ = AppDelegate.showHUD(message: "检测到系统蓝牙打开", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Detect that the system Bluetooth is turned on", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             case .unknown://未知
                 _ = AppDelegate.showHUD(message: "未检测到系统蓝牙状态", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "System Bluetooth status is not detected", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             default:
                 _ = AppDelegate.showHUD(message: "其他情况", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Other situations", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             }
         }
         
@@ -87,14 +93,18 @@ class VPRootViewController: UIViewController {
                 weakSelf.deviceDidDisConnect()
             case .connectStateConnect://连接成功
                 _ = AppDelegate.showHUD(message: "连接成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "connection succeeded", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             case .connectStateVerifyPasswordSuccess://验证密码成功
                 _ = AppDelegate.showHUD(message: "验证密码成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Verify the password is successful", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                 weakSelf.deviceVerifyPasswordSuccessful()
             case .connectStateVerifyPasswordFailure://验证密码失败
                 _ = AppDelegate.showHUD(message: "验证密码失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Failed to verify password", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             case .discoverNewUpdateFirm://发现新固件
                 //可以给出用户弹窗询问用户是否前去升级
                 _ = AppDelegate.showHUD(message: "发现新固件", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "New firmware found", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             }
         }
         VPPeripheralManage.shareVPPeripheralManager()?.receiveDeviceSOSCommand = {() -> Void in
@@ -155,15 +165,21 @@ class VPRootViewController: UIViewController {
         }
         _ = navigationController?.popViewController(animated: true)
         vpDisconnectDeviceButton.isEnabled = true
-        vpDeviceNameLabel.text = "设备名称:" + veepooBleManager.peripheralModel.deviceName
+        //vpDeviceNameLabel.text = "设备名称:" + veepooBleManager.peripheralModel.deviceName
+        vpDeviceNameLabel.text = "Equipment name:" + veepooBleManager.peripheralModel.deviceName
         
-        vpDeviceAddressLabel.text = "MAC地址:" + veepooBleManager.peripheralModel.deviceAddress
+//        vpDeviceAddressLabel.text = "MAC地址:" + veepooBleManager.peripheralModel.deviceAddress
+        vpDeviceAddressLabel.text = "MAC address:" + veepooBleManager.peripheralModel.deviceAddress
         
-        vpDeviceVersionLabel.text = "固件版本:" + veepooBleManager.peripheralModel.deviceVersion + "-" + String(veepooBleManager.peripheralModel.deviceNumber)
+//        vpDeviceVersionLabel.text = "固件版本:" + veepooBleManager.peripheralModel.deviceVersion + "-" + String(veepooBleManager.peripheralModel.deviceNumber)
+        vpDeviceVersionLabel.text = "Firmware version:" + veepooBleManager.peripheralModel.deviceVersion + "-" + String(veepooBleManager.peripheralModel.deviceNumber)
         
         unowned let weakSelf = self
+//        veepooBleManager.peripheralManage.veepooSDKReadDeviceBatteryPower { (batteryLevel) in
+//            weakSelf.vpDeviceBatteryLevelLabel.text = "电池电压:" + String(batteryLevel)
+//        }
         veepooBleManager.peripheralManage.veepooSDKReadDeviceBatteryPower { (batteryLevel) in
-            weakSelf.vpDeviceBatteryLevelLabel.text = "电池电压:" + String(batteryLevel)
+            weakSelf.vpDeviceBatteryLevelLabel.text = "battery voltage:" + String(batteryLevel)
         }
         
         if veepooBleManager.isDFULangMode == true {//如果处于DFULang模式则不再读取数据
@@ -183,12 +199,14 @@ class VPRootViewController: UIViewController {
             switch readDeviceBaseDataState {
             case .start: //开始读取数据
                 hud.show(true)
-                hud.labelText = "开始读取"
+//                hud.labelText = "开始读取"
+                hud.labelText = "Start reading"
             case .reading://正在读取数据
                 let progressString: String = String(currentReadDayNumber) + "/" + String(totalDay) + "  " + String(readCurrentDayProgress) + "%"
                 hud.labelText = progressString
             case .complete://读取数据完成
-                hud.labelText = "读取完成"
+//                hud.labelText = "读取完成"
+                hud.labelText = "Reading completed"
                 hud.hide(true, afterDelay: 1.0)
                 self?.readOxygenData()
             default:
@@ -212,7 +230,8 @@ class VPRootViewController: UIViewController {
         
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDK_readDeviceRunningData(withBlockNumber: 0) { (deviceRunningDict, totalPackage, currentPackage) in
             if currentPackage >= totalPackage {
-                print(deviceRunningDict ?? "没有运动数据")
+//               print(deviceRunningDict ?? "没有运动数据")
+                print(deviceRunningDict ?? "No exercise data")
             }else {
                 print("totalPackage:\(totalPackage) currentPackage:\(currentPackage)")
             }
@@ -223,14 +242,21 @@ class VPRootViewController: UIViewController {
     func deviceDidDisConnect() {//设备已经断开连接
         DestroyStepTimer()
         vpDisconnectDeviceButton.isEnabled = false
-        vpDeviceNameLabel.text = "设备名称:"
-        vpDeviceAddressLabel.text = "MAC地址:"
-        vpDeviceVersionLabel.text = "固件版本:"
-        vpDeviceBatteryLevelLabel.text = "电池电压:"
-        vpDeviceCurrentStepLabel.text = "实时步数:"
+//        vpDeviceNameLabel.text = "设备名称:"
+//        vpDeviceAddressLabel.text = "MAC地址:"
+//        vpDeviceVersionLabel.text = "固件版本:"
+//        vpDeviceBatteryLevelLabel.text = "电池电压:"
+//        vpDeviceCurrentStepLabel.text = "实时步数:"
+        vpDeviceNameLabel.text = "Equipment name:"
+        vpDeviceAddressLabel.text = "MAC address:"
+        vpDeviceVersionLabel.text = "Firmware version:"
+        vpDeviceBatteryLevelLabel.text = "Battery voltage:"
+        vpDeviceCurrentStepLabel.text = "Steps:"
         
         if VPBleCentralManage.sharedBleManager().vpBleDFUConnectStateChangeBlock == nil {//如果没有固件升级断开连接返回到主界面
-            _ = AppDelegate.showHUD(message: "断开连接", hudModel: MBProgressHUDModeText, showView: UIApplication.shared.keyWindow!)
+//            _ = AppDelegate.showHUD(message: "断开连接", hudModel: MBProgressHUDModeText, showView: UIApplication.shared.keyWindow!)
+            _ = AppDelegate.showHUD(message: "Open connection", hudModel: MBProgressHUDModeText, showView:
+                UIApplication.shared.keyWindow!)
             _ = navigationController?.popToRootViewController(animated: true)
         }
     }
@@ -250,7 +276,9 @@ class VPRootViewController: UIViewController {
                 return
             }
             if deviceStepDict["Step"] != nil && deviceStepDict["Dis"] != nil && deviceStepDict["Cal"] != nil {
-                weakSelf.vpDeviceCurrentStepLabel.text = "实时步数:" + (deviceStepDict["Step"] as! String) + "  " + (deviceStepDict["Dis"] as! String) + "km  " + (deviceStepDict["Cal"] as! String) + "kcal  "
+//                weakSelf.vpDeviceCurrentStepLabel.text = "实时步数:" + (deviceStepDict["Step"] as! String) + "  " +
+                weakSelf.vpDeviceCurrentStepLabel.text = "Real-time steps:" + (deviceStepDict["Step"] as! String) + "  " +
+                    (deviceStepDict["Dis"] as! String) + "km  " + (deviceStepDict["Cal"] as! String) + "kcal  "
             }
         }
     }
@@ -261,7 +289,8 @@ class VPRootViewController: UIViewController {
     /// - Parameter sender: ——
     @IBAction func enterScanDeviceController(_ sender: UIButton) {
         if veepooBleManager.isConnected == true {
-            _ = AppDelegate.showHUD(message: "请先断开设备", hudModel: MBProgressHUDModeText, showView: view)
+//            _ = AppDelegate.showHUD(message: "请先断开设备", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "Please disconnect the device first", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         
@@ -287,7 +316,8 @@ class VPRootViewController: UIViewController {
 //        self
 //            .navigationController?.pushViewController(testController, animated: true)
         if veepooBleManager.isConnected == false {
-            _ = AppDelegate.showHUD(message: "设备没有连接", hudModel: MBProgressHUDModeText, showView: view)
+//            _ = AppDelegate.showHUD(message: "设备没有连接", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "The device is not connected", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         
@@ -317,12 +347,14 @@ class VPRootViewController: UIViewController {
             switch readDeviceBaseDataState {
             case .start: //开始读取数据
                 hud.show(true)
-                hud.labelText = "开始读取血氧"
+//                hud.labelText = "开始读取血氧"
+                hud.labelText = "Start reading blood oxygen"
             case .reading://正在读取数据
                 let progressString: String = String(currentReadDayNumber) + "/" + String(totalDay) + "  " + String(readCurrentDayProgress) + "%"
                 hud.labelText = progressString
             case .complete://读取数据完成
-                hud.labelText = "读取完成"
+//                hud.labelText = "读取完成"
+                hud.labelText = "Reading completed"
 //                hud.hide(true, afterDelay: 1.0)
                 self?.readHrvData()
             default:
@@ -336,12 +368,14 @@ class VPRootViewController: UIViewController {
             switch readDeviceBaseDataState {
             case .start: //开始读取数据
                 hud.show(true)
-                hud.labelText = "开始读取HRV"
+//                hud.labelText = "开始读取HRV"
+                hud.labelText = "Start reading HRV"
             case .reading://正在读取数据
                 let progressString: String = String(currentReadDayNumber) + "/" + String(totalDay) + "  " + String(readCurrentDayProgress) + "%"
                 hud.labelText = progressString
             case .complete://读取数据完成
-                hud.labelText = "读取完成"
+//                hud.labelText = "读取完成"
+                hud.labelText = "Reading completed"
                 hud.hide(true, afterDelay: 1.0)
             default:
                 break

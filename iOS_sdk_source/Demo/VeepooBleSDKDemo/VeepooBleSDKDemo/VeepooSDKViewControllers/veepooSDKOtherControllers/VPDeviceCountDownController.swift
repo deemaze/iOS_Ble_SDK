@@ -40,64 +40,64 @@ class VPDeviceCountDownController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "倒计时设置"
+        title = "Countdown setting"
         view.backgroundColor = UIColor.white
-        //所有判断有无的这个里边，自己都可以做个封装，因开发者需求不同，我们就没对其封装效果不一定好
+        //For all judgments of whether or not, you can make a package yourself. Because of the different needs of the developers, we don’t have a good package effect.
         if VPBleCentralManage.sharedBleManager().peripheralModel.deviceFuctionDataTwo == nil {
-            _ = AppDelegate.showHUD(message: "手环没有倒计时功能", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "The bracelet does not have a countdown function", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         var tbyte:[UInt8] = Array(repeating: 0x00, count: 20)
         VPBleCentralManage.sharedBleManager().peripheralModel.deviceFuctionDataTwo.copyBytes(to: &tbyte, count: tbyte.count)
-        if tbyte[1] != 1 {//先判断一下是否有这个功能
-            _ = AppDelegate.showHUD(message: "手环没有倒计时功能", hudModel: MBProgressHUDModeText, showView: view)
+        if tbyte[1] != 1 {//First judge whether it has this function
+            _ = AppDelegate.showHUD(message: "The bracelet does not have a countdown function", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         
         self.readOrSettingCountDownWithCountDownModel(countDownModel: countDownModel, settingMode: 2)
     }
     
-    @IBAction func beginCountDownAction(_ sender: UIButton) {//开始或者取消当前设备正在进行的倒计时
-        if sender.isSelected == true {//取消倒计时 SDK中支持取消，但是设备暂时不支持这个取消功能，做的时候让产品经理考虑一下如何设计，此功能呢暂时无用，SDK只是为了后期需求扩展先加进去了
+    @IBAction func beginCountDownAction(_ sender: UIButton) {//Start or cancel the ongoing countdown of the current device
+        if sender.isSelected == true {//Cancel countdown Cancellation is supported in the SDK, but the device does not support this cancellation function for the time being. Ask the product manager to consider how to design it. This function is temporarily useless. The SDK is only added for later demand expansion.
             self.readOrSettingCountDownWithCountDownModel(countDownModel: countDownModel, settingMode: 0)
         }else {
-            self.showSelectView(selectViewTitle: "倒计时时长")
+            self.showSelectView(selectViewTitle: "Countdown time")
         }
     }
 
-    @IBAction func permanentSwitchAction(_ sender: UISwitch) {//常驻界面 显示或者隐藏
+    @IBAction func permanentSwitchAction(_ sender: UISwitch) {//Resident interface show or hide
         if countDownModel.countDownState == 3 {
-            _ = AppDelegate.showHUD(message: "设备正常进行倒计时", hudModel: MBProgressHUDModeText, showView: self.view)
+            _ = AppDelegate.showHUD(message: "The device counts down normally", hudModel: MBProgressHUDModeText, showView: self.view)
             return
         }
         if sender.isOn == false {
             countDownModel.settingOperation = 0
             self.readOrSettingCountDownWithCountDownModel(countDownModel: countDownModel, settingMode: 1)
         }else {
-            self.showSelectView(selectViewTitle: "常驻倒计时时长")
+            self.showSelectView(selectViewTitle: "Resident countdown time")
         }
         
     }
     
-    @IBAction func selectPermanentTimeAction(_ sender: UIButton) {//选择常驻倒计时时长
+    @IBAction func selectPermanentTimeAction(_ sender: UIButton) {//Select the duration of the permanent countdown
         if countDownModel.countDownState == 3 {
-            _ = AppDelegate.showHUD(message: "设备正常进行倒计时", hudModel: MBProgressHUDModeText, showView: self.view)
+            _ = AppDelegate.showHUD(message: "The device counts down normally", hudModel: MBProgressHUDModeText, showView: self.view)
             return
         }
-        self.showSelectView(selectViewTitle: "常驻倒计时时长")
+        self.showSelectView(selectViewTitle: "Resident countdown time")
     }
 
     func readOrSettingCountDownWithCountDownModel(countDownModel: VPDeviceCountDownModel, settingMode:UInt) {//设置、读取或者监听倒计时
         unowned let weakSelf = self;
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKSettingDeviceCountDown(with: countDownModel, settingMode: settingMode, successResult: { (deviceCountDownModel) in
-            var tip = "读取成功"
+            var tip = "Read successfully"
             if settingMode == 0 {
-                tip = "取消成功"
+                tip = "Cancel success"
             }else if settingMode == 1 {
-                tip = "设置成功"
+                tip = "Set successfully"
             }
             if deviceCountDownModel?.countDownState == 4 {
-                tip = "倒计时结束"
+                tip = "End of countdown"
             }
             if deviceCountDownModel?.countDownState != 3 {
                 _ = AppDelegate.showHUD(message: tip, hudModel: MBProgressHUDModeText, showView: weakSelf.view)
@@ -105,17 +105,17 @@ class VPDeviceCountDownController: UIViewController {
             weakSelf.countDownModel = deviceCountDownModel!
             weakSelf.updateUIShow()
         }) {
-            var tip = "读取失败"
+            var tip = "Read failed"
             if settingMode == 0 {
-                tip = "取消失败"
+                tip = "Cancel failed"
             }else if settingMode == 1 {
-                tip = "设置失败"
+                tip = "Setup failed"
             }
             _ = AppDelegate.showHUD(message: tip, hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }
     }
 
-    func updateUIShow() {//根据model改变界面显示
+    func updateUIShow() {//Change the interface display according to the model
         currentCountDownLabel.text = String(countDownModel.currentCountDownTime)
         countDownBtn.isSelected = countDownModel.countDownState == 3
         showSwitch.isOn = countDownModel.isShow

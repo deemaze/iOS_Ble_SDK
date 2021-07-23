@@ -24,7 +24,7 @@ class VPTestStepController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         obtainOneDayStepData()
-        title = "步数"
+        title = "Step count"
         // Do any additional setup after loading the view.
     }
 
@@ -45,14 +45,14 @@ class VPTestStepController: UIViewController {
         unowned let weakSelf = self
         VPDataBaseOperation.veepooSDKGetStepData(withDate: self.stepDateLabel.text!, andTableID: VPBleCentralManage.sharedBleManager().peripheralModel.deviceAddress, changeUserStature: VPBleCentralManage.sharedBleManager().peripheralModel.deviceStature) { (stepDataBaseDict) in
             guard let stepDict:[String: String] = stepDataBaseDict as! [String : String]? else {
-                weakSelf.stepValueLabel.text = "步数: 0" + "步"
-                weakSelf.disValueLabel.text = "距离: 0" + "km"
-                weakSelf.calValueLabel.text = "卡路里: 0" + "Kcal"
+                weakSelf.stepValueLabel.text = "Step count: 0" + "step"
+                weakSelf.disValueLabel.text = "Distance: 0" + "km"
+                weakSelf.calValueLabel.text = "Calories: 0" + "Kcal"
                 return
             }
-            weakSelf.stepValueLabel.text = "步数: " + stepDict["Step"]! + "步"
-            weakSelf.disValueLabel.text = "距离: " + stepDict["Dis"]! + "km"
-            weakSelf.calValueLabel.text = "卡路里: " + stepDict["Cal"]! + "Kcal"
+            weakSelf.stepValueLabel.text = "Step count: " + stepDict["Step"]! + "step"
+            weakSelf.disValueLabel.text = "Distance: " + stepDict["Dis"]! + "km"
+            weakSelf.calValueLabel.text = "Calories: " + stepDict["Cal"]! + "Kcal"
         }
     }
 

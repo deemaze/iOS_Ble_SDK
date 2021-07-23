@@ -17,31 +17,31 @@ class VPFindDeviceViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        // 1. 判断是否支持 手机查找手环功能
+        // 1. Determine whether it supports the mobile phone search bracelet function
         let support = VPBleCentralManage.sharedBleManager()?.peripheralModel.searchDeviceFunction == 1
-        print("是否支持: \(support)")
-        supportLabel.text = support ? "支持" : "不支持"
+        print("Does it support: \(support)")
+        supportLabel.text = support ? "Supported " : "Not supported"
         searchDeviceBtn.isEnabled = support
     }
     
-    // 2. 已连接设备信号量监听 开启手环查找后，自行创建定时器循环读取设备的信号量
-    // 信号量参考: [非常好，好，中，差] 可以自行划分等级
-    // (-60,   ∞) 信号非常好
-    // (-70, -60] 信号好
-    // (-85, -70] 信号中
-    // (-∞ , -85] 信号差
+    // 2. Semaphore monitoring of the connected device After opening the bracelet search, create a timer to read the semaphore of the device in a loop
+    // Semaphore reference: [very good, good, medium, bad] can be graded by yourself
+    // (-60,   ∞) The signal is very good
+    // (-70, -60] Good signal
+    // (-85, -70] Signal
+    // (-∞ , -85] weak signal
     @IBAction func readConnectedDeviceRSSIValue(_ sender: UIButton) {
         VPBleCentralManage.sharedBleManager()?.veepooSDKReadConnectedPeripheralRSSIValue({ [weak self](rssiValue) in
             print("rssiValue: \(rssiValue)")
-            self?.rssiValueLabel.text = "当前信号值:\(rssiValue)"
+            self?.rssiValueLabel.text = "Current signal value:\(rssiValue)"
         })
     }
     
-    // 3. 查找手环指令协议 设备未增加相关协议则无返回值
+    // 3. Find the bracelet command protocol, if the device does not add the relevant protocol, there will be no return value
     @IBAction func startSearchDeviceClick(_ sender: UIButton) {
         VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSDK_searchDeviceFuntion(withState: !sender.isSelected, result: { [weak self](start, state) in
             print("state: \(state.rawValue)")
-            if state.rawValue == 2 || state.rawValue == 3 {//设备主动退出或查找超时
+            if state.rawValue == 2 || state.rawValue == 3 {//The device actively exits or search timeout
                 self?.searchDeviceBtn.isSelected = false
             }
         })

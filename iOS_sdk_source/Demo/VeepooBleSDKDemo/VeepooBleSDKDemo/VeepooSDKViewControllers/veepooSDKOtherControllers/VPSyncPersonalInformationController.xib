@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -29,18 +27,18 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="身高：50" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="r5v-ux-xBh">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Height：50" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="r5v-ux-xBh">
                     <rect key="frame" x="16" y="94" width="92" height="21"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="92" id="5BC-ng-t5B"/>
                         <constraint firstAttribute="height" constant="21" id="y2K-80-9Z0"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <nil key="textColor"/>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="50" maxValue="250" translatesAutoresizingMaskIntoConstraints="NO" id="bqY-rg-Efi">
-                    <rect key="frame" x="114" y="89" width="247" height="31"/>
+                    <rect key="frame" x="114" y="89.5" width="247" height="31"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="WcD-Ek-2dq"/>
                     </constraints>
@@ -48,69 +46,69 @@
                         <action selector="sliderAction:" destination="-1" eventType="valueChanged" id="A76-4W-hAe"/>
                     </connections>
                 </slider>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="体重：25" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="9xL-8t-zJr">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Body weight：25" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="9xL-8t-zJr">
                     <rect key="frame" x="16" y="140" width="92" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <nil key="textColor"/>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <slider opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="25" minValue="25" maxValue="300" translatesAutoresizingMaskIntoConstraints="NO" id="u90-04-tJP">
-                    <rect key="frame" x="114" y="136" width="247" height="31"/>
+                    <rect key="frame" x="114" y="135.5" width="247" height="31"/>
                     <connections>
                         <action selector="sliderAction:" destination="-1" eventType="valueChanged" id="OPj-Nh-JH9"/>
                     </connections>
                 </slider>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="性别：女" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="mAi-5I-SnX">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gender: Female" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="mAi-5I-SnX">
                     <rect key="frame" x="16" y="232" width="92" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="aGc-FE-S3r">
-                    <rect key="frame" x="116" y="229" width="116" height="29"/>
+                    <rect key="frame" x="116" y="228.5" width="116" height="29"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="116" id="15y-oi-Ndy"/>
                         <constraint firstAttribute="height" constant="28" id="68v-rX-EAF"/>
                     </constraints>
                     <segments>
-                        <segment title="女"/>
-                        <segment title="男"/>
+                        <segment title="Female"/>
+                        <segment title="Male"/>
                     </segments>
                     <connections>
                         <action selector="sexSegControlAction:" destination="-1" eventType="valueChanged" id="AA3-vd-V0J"/>
                     </connections>
                 </segmentedControl>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="出生：1990" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="rns-xU-xxW">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Born：1990" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="rns-xU-xxW">
                     <rect key="frame" x="16" y="186" width="92" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <slider opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1990" minValue="1990" maxValue="2015" translatesAutoresizingMaskIntoConstraints="NO" id="ql5-3D-QSz">
-                    <rect key="frame" x="114" y="182" width="247" height="31"/>
+                    <rect key="frame" x="114" y="181.5" width="247" height="31"/>
                     <connections>
                         <action selector="sliderAction:" destination="-1" eventType="valueChanged" id="Wy5-Ik-Km0"/>
                     </connections>
                 </slider>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="目标：1000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="cQL-Wv-AfL">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The goal：1000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="cQL-Wv-AfL">
                     <rect key="frame" x="16" y="278" width="92" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <nil key="textColor"/>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <slider opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1000" minValue="1000" maxValue="60000" translatesAutoresizingMaskIntoConstraints="NO" id="qaY-oH-YbK">
-                    <rect key="frame" x="114" y="274" width="247" height="31"/>
+                    <rect key="frame" x="114" y="273.5" width="247" height="31"/>
                     <connections>
                         <action selector="sliderAction:" destination="-1" eventType="valueChanged" id="CUq-LO-Kkr"/>
                     </connections>
                 </slider>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4rR-fJ-glq">
-                    <rect key="frame" x="16" y="334" width="343" height="44"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4rR-fJ-glq">
+                    <rect key="frame" x="16" y="333.5" width="343" height="44"/>
                     <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="Ead-KK-hOn"/>
                     </constraints>
-                    <state key="normal" title="开始设置"/>
+                    <state key="normal" title="Set up"/>
                     <connections>
                         <action selector="startSyncAction:" destination="-1" eventType="touchUpInside" id="MFN-j5-TsU"/>
                     </connections>

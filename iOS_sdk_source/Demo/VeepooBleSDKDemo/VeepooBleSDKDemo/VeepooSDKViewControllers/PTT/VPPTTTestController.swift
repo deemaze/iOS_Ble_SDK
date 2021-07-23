@@ -24,7 +24,7 @@ class VPPTTTestController: UIViewController {
         //监听设备是否处于PTT模式下
         VPBleCentralManage.sharedBleManager()?
             .peripheralManage.veepooSDKAddPTTStateListener({[weak self] (state) in
-            self?.pttStateLabel.text = state == 1 ? "设备已进入PTT模式" : "设备未进入PTT模式"
+            self?.pttStateLabel.text = state == 1 ? "The device has entered PTT mode" : "The device has not entered PTT mode"
         })
     }
     
@@ -41,11 +41,11 @@ class VPPTTTestController: UIViewController {
     func handleValue(_ model: VPPttValueModel?) {
         switch model!.testState {
         case .normal:
-            valueLabel.text = "心率:\(model!.heart)    HRV:\(model!.hrv)    QT:\(model!.qt)"
+            valueLabel.text = "Heart rate:\(model!.heart)    HRV:\(model!.hrv)    QT:\(model!.qt)"
         case .busy:
-            valueLabel.text = "设备在处理其他事情"
+            valueLabel.text = "The device is processing other things"
         case .leadFail:
-            valueLabel.text = "设备导联脱落"
+            valueLabel.text = "Device leads fall off"
         default:
             valueLabel.text = ""
         }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -22,26 +22,26 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="手环当前表盘为:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pc5-Rw-EqX">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The current dial of the bracelet is:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pc5-Rw-EqX">
                     <rect key="frame" x="20" y="53" width="126" height="21"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="126" id="YBK-uo-nQG"/>
                         <constraint firstAttribute="height" constant="21" id="oqD-gf-Hfk"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="默认表盘1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eIi-Ng-n1a">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Default dial 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eIi-Ng-n1a">
                     <rect key="frame" x="154" y="53" width="225" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6UU-C7-78I">
                     <rect key="frame" x="217" y="89" width="177" height="44"/>
                     <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" title="切换为市场表盘"/>
+                    <state key="normal" title="Switch to market watch face"/>
                     <connections>
                         <action selector="setDeviceScreenStyleToMarketClick:" destination="-1" eventType="touchUpInside" id="BFy-2k-7aU"/>
                     </connections>
@@ -49,7 +49,7 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cQo-e9-RZC">
                     <rect key="frame" x="217" y="193" width="177" height="44"/>
                     <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" title="4.传输市场表盘"/>
+                    <state key="normal" title="4. Transfer the market dial"/>
                     <connections>
                         <action selector="transferMarketDialToDeviceClick:" destination="-1" eventType="touchUpInside" id="PsZ-bP-nJ5"/>
                     </connections>
@@ -57,7 +57,7 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="naM-5b-NLm">
                     <rect key="frame" x="20" y="193" width="177" height="44"/>
                     <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" title="3.下载表盘文件"/>
+                    <state key="normal" title="3. Download the watch face file"/>
                     <connections>
                         <action selector="downloadTransferBinFileClick:" destination="-1" eventType="touchUpInside" id="BBt-Md-xQw"/>
                     </connections>
@@ -65,7 +65,7 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OBw-zF-yUB">
                     <rect key="frame" x="217" y="141" width="177" height="44"/>
                     <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" title="2.获取服务器市场表盘"/>
+                    <state key="normal" title="2. Get the server market dial"/>
                     <connections>
                         <action selector="getServerMarketDialsClick:" destination="-1" eventType="touchUpInside" id="OQh-1p-JNm"/>
                     </connections>
@@ -76,7 +76,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="5jQ-ku-T37"/>
                     </constraints>
-                    <state key="normal" title="读取当前表盘"/>
+                    <state key="normal" title="Read current watch face"/>
                     <connections>
                         <action selector="readDeviceScreenStyleClick:" destination="-1" eventType="touchUpInside" id="VI8-K0-drV"/>
                     </connections>
@@ -91,7 +91,7 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fnj-sU-zCK">
                     <rect key="frame" x="20" y="141" width="177" height="44"/>
                     <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" title="1.读取市场表盘信息"/>
+                    <state key="normal" title="1. Read the market watch face information"/>
                     <connections>
                         <action selector="readDeviceMarketDialInfoClick:" destination="-1" eventType="touchUpInside" id="xCR-Zj-BiT"/>
                     </connections>

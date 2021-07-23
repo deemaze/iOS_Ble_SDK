@@ -54,21 +54,21 @@ class VPCountDownSelectView: UIView, UIPickerViewDelegate,UIPickerViewDataSource
         let cancelBtn = UIButton(type: .custom)
         cancelBtn.frame = CGRect(x: 10, y: 0, width: 40, height: seletctTopView.frame.height)
         cancelBtn.tag = 0
-        cancelBtn.setTitle("取消", for: .normal)
+        cancelBtn.setTitle("Cancel", for: .normal)
         cancelBtn.addTarget(self, action: #selector(cancelOrConfirmAction(sender:)), for: .touchUpInside)
         seletctTopView.addSubview(cancelBtn)
         
         let confirmBtn = UIButton(type: .custom)
         confirmBtn.frame = CGRect(x: seletctTopView.frame.width - 50, y: 0, width: 40, height: seletctTopView.frame.height)
         confirmBtn.tag = 1
-        confirmBtn.setTitle("确定", for: .normal)
+        confirmBtn.setTitle("Determine", for: .normal)
         confirmBtn.addTarget(self, action: #selector(cancelOrConfirmAction(sender:)), for: .touchUpInside)
         seletctTopView.addSubview(confirmBtn)
         
         titleLabel.frame = CGRect(x: 60, y: 0, width: seletctTopView.frame.size.width - 120, height: seletctTopView.frame.size.height)
         titleLabel.textAlignment = .center
         titleLabel.textColor = UIColor.white
-        titleLabel.text = "倒计时时长"
+        titleLabel.text = "Countdown time"
         seletctTopView.addSubview(titleLabel)
         
         selectPickerView.frame = CGRect(x: 0, y: seletctTopView.frame.size.height, width: selectMainView.frame.size.width, height: selectMainView.frame.size.height - seletctTopView.frame.size.height)
@@ -77,9 +77,9 @@ class VPCountDownSelectView: UIView, UIPickerViewDelegate,UIPickerViewDataSource
         selectMainView.addSubview(selectPickerView)
     }
     
-    @objc func cancelOrConfirmAction(sender: UIButton) {//取消或者确认操作
+    @objc func cancelOrConfirmAction(sender: UIButton) {//Cancel or confirm operation
         if sender.tag == 1 {
-            if selectViewTitle == "常驻倒计时时长" {
+            if selectViewTitle == "Resident countdown time" {
                 countDownModel?.repeatTime = UInt(a)
                 countDownModel?.settingOperation = 1
             }else {

@@ -74,6 +74,7 @@
 		67FC22BB1E68FBEE0029DED3 /* VPTestOxygenController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 67FC22B91E68FBEE0029DED3 /* VPTestOxygenController.xib */; };
 		67FC22BF1E68FF7D0029DED3 /* VPTestFatigueController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FC22BD1E68FF7D0029DED3 /* VPTestFatigueController.swift */; };
 		67FC22C01E68FF7D0029DED3 /* VPTestFatigueController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 67FC22BE1E68FF7D0029DED3 /* VPTestFatigueController.xib */; };
+		A7961D1F26AB023600DCC61F /* VeepooBleSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7961D1E26AB023600DCC61F /* VeepooBleSDK.framework */; };
 		AED6550F5A15F5F576BC2162 /* Pods_VeepooBleSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75064C534A7C08FD1E8AB4B /* Pods_VeepooBleSDKDemo.framework */; };
 		FE27F0ED264A1DD50080CDA1 /* VPMapGPSTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE27F0EB264A1DD50080CDA1 /* VPMapGPSTagViewController.swift */; };
 		FE27F0EE264A1DD50080CDA1 /* VPMapGPSTagViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE27F0EC264A1DD50080CDA1 /* VPMapGPSTagViewController.xib */; };
@@ -170,7 +171,7 @@
 		67CB1CB11E52D26E00805649 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		67CB1CB41E52D26E00805649 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		67CB1CB61E52D26E00805649 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		67CB1CBE1E52D49D00805649 /* VeepooBleSDK-Brigding-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "VeepooBleSDK-Brigding-Header.h"; path = "VeepooBleSDKDemo/VeepooBleSDK-Brigding-Header.h"; sourceTree = "<group>"; };
+		67CB1CBE1E52D49D00805649 /* VeepooBleSDK-Brigding-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VeepooBleSDK-Brigding-Header.h"; sourceTree = "<group>"; };
 		67FC22931E6560860029DED3 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		67FC22941E6560860029DED3 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		67FC22AF1E67FC660029DED3 /* VPRaiseHandSettingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPRaiseHandSettingController.swift; sourceTree = "<group>"; };
@@ -183,6 +184,7 @@
 		67FC22BE1E68FF7D0029DED3 /* VPTestFatigueController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VPTestFatigueController.xib; sourceTree = "<group>"; };
 		8ADCC1E39C7B06805F3E9386 /* Pods-VeepooBleSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VeepooBleSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VeepooBleSDKDemo/Pods-VeepooBleSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		A75064C534A7C08FD1E8AB4B /* Pods_VeepooBleSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VeepooBleSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7961D1E26AB023600DCC61F /* VeepooBleSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VeepooBleSDK.framework; sourceTree = "<group>"; };
 		FE27F0EB264A1DD50080CDA1 /* VPMapGPSTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPMapGPSTagViewController.swift; sourceTree = "<group>"; };
 		FE27F0EC264A1DD50080CDA1 /* VPMapGPSTagViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VPMapGPSTagViewController.xib; sourceTree = "<group>"; };
 		FE65720C25B930AD00672A8B /* VPPhotoDialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPPhotoDialViewController.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE70FA94263A613F00074260 /* GRDFUSDK.framework in Frameworks */,
+				A7961D1F26AB023600DCC61F /* VeepooBleSDK.framework in Frameworks */,
 				AED6550F5A15F5F576BC2162 /* Pods_VeepooBleSDKDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -364,7 +367,6 @@
 			children = (
 				67CB1CA91E52D26E00805649 /* VeepooBleSDKDemo */,
 				67CB1CA81E52D26E00805649 /* Products */,
-				67CB1CBE1E52D49D00805649 /* VeepooBleSDK-Brigding-Header.h */,
 				E04CD0EEF90AE6C14CB53AB6 /* Pods */,
 				D7CAD296DC5D9076F1028FA8 /* Frameworks */,
 			);
@@ -381,6 +383,7 @@
 		67CB1CA91E52D26E00805649 /* VeepooBleSDKDemo */ = {
 			isa = PBXGroup;
 			children = (
+				A7961D1E26AB023600DCC61F /* VeepooBleSDK.framework */,
 				FE70FA85263A5F2400074260 /* GRDFUSDK.framework */,
 				678C89A121F036AF0041E0AB /* SDKResours.bundle */,
 				675052201E553C9C008D45BC /* VeepooBleSDKBaseViewController */,
@@ -396,6 +399,7 @@
 				67CB1CB61E52D26E00805649 /* Info.plist */,
 				67B64E421EDFB5E8000549D6 /* VPTest.h */,
 				67B64E431EDFB5E8000549D6 /* VPTest.m */,
+				67CB1CBE1E52D49D00805649 /* VeepooBleSDK-Brigding-Header.h */,
 			);
 			path = VeepooBleSDKDemo;
 			sourceTree = "<group>";
@@ -448,12 +452,12 @@
 			attributes = {
 				CLASSPREFIX = VP;
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = veepoo;
 				TargetAttributes = {
 					67CB1CA61E52D26E00805649 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 4E8S34J8UT;
+						DevelopmentTeam = N6ENFU699G;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -662,6 +666,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -669,8 +674,10 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -695,7 +702,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -718,6 +725,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -725,8 +733,10 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -745,7 +755,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -759,16 +769,23 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 4E8S34J8UT;
+				DEVELOPMENT_TEAM = N6ENFU699G;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/VeepooBleSDKDemo",
 					"$(PROJECT_DIR)",
 				);
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/AFNetworking/AFNetworking.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FMDB/FMDB.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/MJExtension/MJExtension.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Zip/Zip.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/iOSDFULibrary/iOSDFULibrary.framework/Headers\"",
+				);
 				INFOPLIST_FILE = VeepooBleSDKDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.8;
 				OTHER_LDFLAGS = (
@@ -787,6 +804,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "VeepooBleSDKDemo/VeepooBleSDK-Brigding-Header.h";
 				SWIFT_VERSION = 4.0;
+				VALIDATE_WORKSPACE = NO;
 			};
 			name = Debug;
 		};
@@ -796,16 +814,23 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 4E8S34J8UT;
+				DEVELOPMENT_TEAM = N6ENFU699G;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/VeepooBleSDKDemo",
 					"$(PROJECT_DIR)",
 				);
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/AFNetworking/AFNetworking.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FMDB/FMDB.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/MJExtension/MJExtension.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Zip/Zip.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/iOSDFULibrary/iOSDFULibrary.framework/Headers\"",
+				);
 				INFOPLIST_FILE = VeepooBleSDKDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.8;
 				OTHER_LDFLAGS = (
@@ -824,6 +849,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "VeepooBleSDKDemo/VeepooBleSDK-Brigding-Header.h";
 				SWIFT_VERSION = 4.0;
+				VALIDATE_WORKSPACE = NO;
 			};
 			name = Release;
 		};

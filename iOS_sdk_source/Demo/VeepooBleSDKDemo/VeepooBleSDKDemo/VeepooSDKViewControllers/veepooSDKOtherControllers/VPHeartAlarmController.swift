@@ -26,22 +26,22 @@ class VPHeartAlarmController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "心率报警"
+        title = "Heart rate alarm"
         var tbyte:[UInt8] = Array(repeating: 0x00, count: 20)
         VPBleCentralManage.sharedBleManager().peripheralModel.deviceFuctionData.copyBytes(to: &tbyte, count: tbyte.count)
-        if tbyte[10] != 1 {//先判断一下是否有这个功能
-            _ = AppDelegate.showHUD(message: "手环没有心率报警功能", hudModel: MBProgressHUDModeText, showView: view)
+        if tbyte[10] != 1 {//First judge whether it has this function
+            _ = AppDelegate.showHUD(message: "The bracelet does not have a heart rate alarm function", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         
         //心率报警功能先读取
         unowned let weakSelf = self
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKSettingDeviceHeartAlarm(with: VPDeviceHeartAlarmModel(), settingMode: 2, successResult: { (heartAlarmModel) in
-            _ = AppDelegate.showHUD(message: "读取成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Read successfully", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             weakSelf.heartAlarmModel = heartAlarmModel!
             weakSelf.showDeviceHeartAlarmValue()
         }) {
-            _ = AppDelegate.showHUD(message: "读取失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Read failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }
     }
     
@@ -64,20 +64,20 @@ class VPHeartAlarmController: UIViewController {
     @IBAction func startSettingHeartAlarmAction(_ sender: UIButton) {
         unowned let weakSelf = self
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKSettingDeviceHeartAlarm(with: heartAlarmModel, settingMode: UInt(heartStateSegControl.selectedSegmentIndex), successResult: { (heartAlarmModel) in
-            _ = AppDelegate.showHUD(message: "设置成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
-            //下边不执行也可以
+            _ = AppDelegate.showHUD(message: "Set successfully", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            //It’s okay if you don’t execute it below
             weakSelf.heartAlarmModel = heartAlarmModel!
             weakSelf.showDeviceHeartAlarmValue()
         }) {
-            _ = AppDelegate.showHUD(message: "设置失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Setup failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }
     }
     
     
     func showDeviceHeartAlarmValue()  {
-        heartMaxLabel.text = "心率上限:" + String(heartAlarmModel.heartMaxValue < 80 ? 80 : heartAlarmModel.heartMaxValue)
-        heartMinLabel.text = "心率下限:" + String( heartAlarmModel.heartMinValue < 30 ? 30 : heartAlarmModel.heartMinValue)
-        heartAlarmStateLabel.text = heartAlarmModel.isOpen ? "状态:开" : "状态:关"
+        heartMaxLabel.text = "Upper limit of heart rate:" + String(heartAlarmModel.heartMaxValue < 80 ? 80 : heartAlarmModel.heartMaxValue)
+        heartMinLabel.text = "Lower limit of heart rate:" + String( heartAlarmModel.heartMinValue < 30 ? 30 : heartAlarmModel.heartMinValue)
+        heartAlarmStateLabel.text = heartAlarmModel.isOpen ? "Status: On" : "Status: Off"
         
         heartMaxSlider.value = Float(heartAlarmModel.heartMaxValue < 80 ? 80 : heartAlarmModel.heartMaxValue)
         heartMinSlider.value = Float( heartAlarmModel.heartMinValue < 30 ? 30 : heartAlarmModel.heartMinValue)

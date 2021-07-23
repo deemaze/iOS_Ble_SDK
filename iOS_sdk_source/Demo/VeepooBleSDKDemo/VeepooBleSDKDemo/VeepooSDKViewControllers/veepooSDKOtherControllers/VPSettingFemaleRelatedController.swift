@@ -36,18 +36,18 @@ class VPSettingFemaleRelatedController: UIViewController , UITableViewDelegate ,
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
-        title = "女性项目设置"
+        title = "Feminine project settings"
         // Do any additional setup after loading the view.
         var tbyte:[UInt8] = Array(repeating: 0x00, count: 20)
         VPBleCentralManage.sharedBleManager().peripheralModel.deviceFuctionData.copyBytes(to: &tbyte, count: tbyte.count)
-        if tbyte[12] == 0 {//先判断一下是否有这个功能,1是App端只是所有语言，2是App端只是支持中英文，这个是产品设计问题，手环上没有区别，原因是手环上只做了中文和英文
-            _ = AppDelegate.showHUD(message: "手环没有女性功能", hudModel: MBProgressHUDModeText, showView: view)
+        if tbyte[12] == 0 {//First judge whether there is this function, 1 is the App side only supports all languages, 2 is the App side only supports Chinese and English, this is a product design problem, there is no difference on the bracelet, the reason is that only Chinese and English are made on the bracelet
+            _ = AppDelegate.showHUD(message: "The bracelet has no feminine function", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         self.setFemaleRelateControllerUI()
-        //开始要先读取手环的，App上展示以手环为准,读取也要有个模型，模型只要有就可以，不能为nil
+        //At the beginning, you need to read the bracelet first. The display on the App is based on the bracelet, and there must be a model for reading. As long as there is a model, it cannot be nil.
         let femaleModel = VPDeviceFemaleModel()
-        //开始读取
+        //Start reading
         unowned let weakSelf = self;
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKSettingDeviceFemale(with: femaleModel, settingMode: 2, successResult: { (deviceFemaleModel) in
             guard let deviceFemaleModel = deviceFemaleModel else {
@@ -55,9 +55,9 @@ class VPSettingFemaleRelatedController: UIViewController , UITableViewDelegate ,
             }
             weakSelf.femaleModel = deviceFemaleModel
             weakSelf.femaleRelatedTableView?.reloadData()
-            _ = AppDelegate.showHUD(message: "读取成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Read successfully", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }) {
-            _ = AppDelegate.showHUD(message: "读取失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Read failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }
     }
 
@@ -71,7 +71,7 @@ class VPSettingFemaleRelatedController: UIViewController , UITableViewDelegate ,
         footBtn.frame = CGRect(x: 15, y: 7, width: footView.frame.size.width - 30, height: footView.frame.size.height - 14)
         footBtn.addTarget(self, action: #selector(startSettingFemaleAction), for: .touchUpInside)
         footBtn.backgroundColor = UIColor.lightGray
-        footBtn.setTitle("设置", for: .normal)
+        footBtn.setTitle("Set up", for: .normal)
         footBtn.setTitleColor(UIColor.brown, for: .normal)
         footView.addSubview(footBtn)
         femaleRelatedTableView?.tableFooterView = footView
@@ -85,32 +85,32 @@ class VPSettingFemaleRelatedController: UIViewController , UITableViewDelegate ,
                 return
             }
             weakSelf.femaleModel = deviceFemaleModel
-            _ = AppDelegate.showHUD(message: "设置成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Set successfully", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }) {
-            _ = AppDelegate.showHUD(message: "设置失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Setup failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }
     }
 
     func obtainUIShowMessage() -> Int {
-        if self.femaleModel.femaleState == VPDeviceFemaleState(rawValue:0) {//没有生理期
-            self.femaleTitleArray = ["生理期选择"]
-            self.femaleDetailArray = ["暂无"]
+        if self.femaleModel.femaleState == VPDeviceFemaleState(rawValue:0) {//No menstrual period
+            self.femaleTitleArray = ["Menstrual period selection"]
+            self.femaleDetailArray = ["No"]
             return 1
-        }else if self.femaleModel.femaleState == VPDeviceFemaleState(rawValue:1) || self.femaleModel.femaleState == VPDeviceFemaleState(rawValue:2) {//经期或者备孕期
-            self.femaleTitleArray = ["生理期选择","最后经期日期","经期周期","经期正常持续天数"]
-            self.femaleDetailArray = [self.femaleModel.femaleState == VPDeviceFemaleState(rawValue:1) ? "经期" : "备孕期",self.femaleModel.lastMenstrualDate ?? "",String(self.femaleModel.menstrualCircle),String(self.femaleModel.menstrualDays)]
+        }else if self.femaleModel.femaleState == VPDeviceFemaleState(rawValue:1) || self.femaleModel.femaleState == VPDeviceFemaleState(rawValue:2) {//Menstrual period or pregnancy period
+            self.femaleTitleArray = ["Menstrual period selection","Last menstrual period date","Menstrual cycle","Normal duration of menstrual period"]
+            self.femaleDetailArray = [self.femaleModel.femaleState == VPDeviceFemaleState(rawValue:1) ? "menstruation" : "Preparation period",self.femaleModel.lastMenstrualDate ?? "",String(self.femaleModel.menstrualCircle),String(self.femaleModel.menstrualDays)]
             return 4
-        }else if self.femaleModel.femaleState == VPDeviceFemaleState(rawValue:3) {//预产期，换孕期
-            self.femaleTitleArray = ["生理期选择","预产期"]
-            self.femaleDetailArray = ["预产",self.femaleModel.expectedDateOfChildbirth ?? ""]
+        }else if self.femaleModel.femaleState == VPDeviceFemaleState(rawValue:3) {//Expected date of delivery
+            self.femaleTitleArray = ["Menstrual period selection","Expected date of delivery"]
+            self.femaleDetailArray = ["Pre-production",self.femaleModel.expectedDateOfChildbirth ?? ""]
             return 2
-        }else if self.femaleModel.femaleState == VPDeviceFemaleState(rawValue:4) {//预产期，换孕期
-            self.femaleTitleArray = ["生理期选择","最后经期日期","经期周期","经期正常持续天数","宝宝生日","宝宝性别"]
-            self.femaleDetailArray = ["宝妈",self.femaleModel.lastMenstrualDate ?? "",String(self.femaleModel.menstrualCircle),String(self.femaleModel.menstrualDays),self.femaleModel.babyBirthday ?? "",self.femaleModel.isGirl ? "女" : "男"]
+        }else if self.femaleModel.femaleState == VPDeviceFemaleState(rawValue:4) {//Expected date of delivery
+            self.femaleTitleArray = ["Menstrual period selection", "last menstrual period date", "menstrual cycle", "normal menstrual period lasting days", "baby birthday", "baby gender"]
+            self.femaleDetailArray = ["Bao Ma",self.femaleModel.lastMenstrualDate ?? "",String(self.femaleModel.menstrualCircle),String(self.femaleModel.menstrualDays),self.femaleModel.babyBirthday ?? "",self.femaleModel.isGirl ? "Female" : "male"]
             return 6
         }
-        self.femaleTitleArray = ["生理期选择"]
-        self.femaleDetailArray = ["暂无"]
+        self.femaleTitleArray = ["Menstrual period selection"]
+        self.femaleDetailArray = ["No"]
         return 1
     }
 

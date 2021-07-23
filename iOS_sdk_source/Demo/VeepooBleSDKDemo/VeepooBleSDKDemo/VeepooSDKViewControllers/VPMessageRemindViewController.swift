@@ -14,12 +14,15 @@ class VPMessageRemindViewController: UIViewController , UITableViewDelegate , UI
     
     var messageRemindTableView: UITableView?
     
-    let messageFunctions = ["来电","短信","微信","QQ","新浪","Facebook","Twitter","Flickr","Linkedln","whatsApp","Line","Instagram","Snapchat","Skype","GMail","DingTalk","WeChat Work","其他应用"]
+//    let messageFunctions = ["来电","短信","微信","QQ","新浪","Facebook","Twitter","Flickr","Linkedln","whatsApp","Line","Instagram","Snapchat","Skype","GMail","DingTalk","WeChat Work","其他应用"]
+    let messageFunctions = ["Incoming call","SMS","Wechat","QQ","Sina","Facebook","Twitter","Flickr","Linkedln","whatsApp","Line","Instagram","Snapchat","Skype","GMail","DingTalk","WeChat Work","Other apps"]
+    
     let messageFunctionsTwo = ["TikTok","Telegram","Connected2","Kakao Talk"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "信息提醒"
+//        title = "信息提醒"
+        title = "Information reminder"
         view.backgroundColor = UIColor.white
         initMessageRemindViewControllerUI()
     }
@@ -35,7 +38,7 @@ class VPMessageRemindViewController: UIViewController , UITableViewDelegate , UI
             let operationBtn = UIButton(frame: CGRect(x: CGFloat(i - 1) * Width / 2 + 20, y: 5, width: Width / 2 - 40, height: 40))
             operationBtn.backgroundColor = UIColor.brown
             operationBtn.tag = i
-            operationBtn.setTitle(i == 1 ? "全开" : "全关", for: .normal)
+            operationBtn.setTitle(i == 1 ? "Full open" : "All off", for: .normal)
             operationBtn.addTarget(self, action: #selector(openOrCloseAllFunction(sender:)), for: .touchUpInside)
             headerView.addSubview(operationBtn)
         }
@@ -44,7 +47,8 @@ class VPMessageRemindViewController: UIViewController , UITableViewDelegate , UI
     
     @objc func openOrCloseAllFunction(sender: UIButton)  {//开始设置信息提醒的开关功能
         if VPBleCentralManage.sharedBleManager().isConnected == false {
-            _ = AppDelegate.showHUD(message: "设备未连接,设置失败", hudModel: MBProgressHUDModeText, showView: view)
+//            _ = AppDelegate.showHUD(message: "设备未连接,设置失败", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "The device is not connected and the setting fails", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         
@@ -52,17 +56,22 @@ class VPMessageRemindViewController: UIViewController , UITableViewDelegate , UI
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKSettingMessageType(VPSettingMessageSwitchType.settingAll, settingState: VPSettingFunctionState(rawValue: sender.tag)!) { (settingFunctionCompleteState) in
             switch settingFunctionCompleteState {
             case .functionCompleteUnknown:
-                _ = AppDelegate.showHUD(message: "没有此功能", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "No such feature", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+//                _ = AppDelegate.showHUD(message: "没有此功能", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             case .functionCompleteFailure:
-                _ = AppDelegate.showHUD(message: "设置失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+//                _ = AppDelegate.showHUD(message: "设置失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Setup failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             case .functionCompleteOpen:
-                _ = AppDelegate.showHUD(message: "设置成功，已经开启", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+//                _ = AppDelegate.showHUD(message: "设置成功，已经开启", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Set up successfully, has been turned on", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                 weakSelf.messageRemindTableView?.reloadData()
             case .functionCompleteClose:
-                _ = AppDelegate.showHUD(message: "设置成功，已经关闭", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+//                _ = AppDelegate.showHUD(message: "设置成功，已经关闭", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Set up successfully, has been closed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                 weakSelf.messageRemindTableView?.reloadData()
             case .functionCompleteComplete:
-                _ = AppDelegate.showHUD(message: "设置完成", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+//                _ = AppDelegate.showHUD(message: "设置完成", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Set up", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                 weakSelf.messageRemindTableView?.reloadData()
             }
         }
@@ -70,7 +79,7 @@ class VPMessageRemindViewController: UIViewController , UITableViewDelegate , UI
     
     @objc func messageOpenOrCloseAction(sender: UISwitch)  {//开始设置信息提醒的开关功能
         if VPBleCentralManage.sharedBleManager().isConnected == false {
-            _ = AppDelegate.showHUD(message: "设备未连接,设置失败", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "The device is not connected and the setting fails", hudModel: MBProgressHUDModeText, showView: view)
             self.perform(#selector(settingMessageRemindFarilure(sender:)), with: sender, afterDelay: 0.5)
             return
         }
@@ -80,17 +89,17 @@ class VPMessageRemindViewController: UIViewController , UITableViewDelegate , UI
             
             switch settingFunctionCompleteState {
             case .functionCompleteUnknown:
-                _ = AppDelegate.showHUD(message: "没有此功能", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "No such feature", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                 fallthrough
             case .functionCompleteFailure:
                 weakSelf.perform(#selector(weakSelf.settingMessageRemindFarilure(sender:)), with: sender, afterDelay: 0.5)
-                _ = AppDelegate.showHUD(message: "设置失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Setup failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             case .functionCompleteOpen:
-                _ = AppDelegate.showHUD(message: "设置成功，已经开启", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Set up successfully, has been turned on", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             case .functionCompleteClose:
-                _ = AppDelegate.showHUD(message: "设置成功，已经关闭", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Set up successfully, has been closed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             case .functionCompleteComplete:
-                _ = AppDelegate.showHUD(message: "设置完成", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Set up", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             }
         }
     }

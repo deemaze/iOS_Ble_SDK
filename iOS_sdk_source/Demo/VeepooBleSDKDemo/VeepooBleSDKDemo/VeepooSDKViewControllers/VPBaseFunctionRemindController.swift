@@ -15,13 +15,13 @@ class VPBaseFunctionRemindController: UIViewController  , UITableViewDelegate , 
     var baseFunctionRemindTableView: UITableView?
     
     //血氧自动检测功能无用，LED档位如果有1代表正常肤色档位 2代表黑色皮肤档位
-    let baseFunctions = ["夜间抬手亮屏","设备防丢失","佩戴检测","公制","24小时制","心率自动检测","血压自动检测","运动量过量提醒","心率血氧血压语音播报","手机查找","秒表功能","血氧过低通知","LED档位","HRV夜间自动检测","来电免接听","蓝牙断链提醒","SOS页面显示","PPG(脉率)自动监测","血氧自动检测"]
+    let baseFunctions = ["Raise your hand to brighten the screen at night","Equipment loss prevention","Wear testing","Metric","24-hour clock","Heart rate automatic detection","Automatic blood pressure detection","Excessive exercise reminder","Heart rate, blood oxygen and blood pressure voice broadcast","Phone lookup","Stopwatch function","Hypoxemia notification","LED gear","HRV automatic detection at night","Free call","Bluetooth broken link reminder","SOS page display","PPG (pulse rate) automatic monitoring","Automatic blood oxygen detection"]
     
-    let baseTwoFunctions = ["长按解锁", "消息亮屏"]
+    let baseTwoFunctions = ["Long press to unlock", "The message turns on"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "基本开关"
+        title = "Basic switch"
         view.backgroundColor = UIColor.white
         baseFunctionRemindTableView = UITableView(frame: view.bounds, style: .plain)
         baseFunctionRemindTableView?.contentInset = UIEdgeInsetsMake(0, 0, 80, 0)
@@ -46,7 +46,7 @@ class VPBaseFunctionRemindController: UIViewController  , UITableViewDelegate , 
     @objc func baseFunctionOpenOrCloseRemindAction(sender: UISwitch)  {//开始设置信息提醒的开关功能
         if VPBleCentralManage.sharedBleManager().isConnected == false {
             print();
-            _ = AppDelegate.showHUD(message: "设备未连接,设置失败", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "The device is not connected and the setting fails", hudModel: MBProgressHUDModeText, showView: view)
             self.perform(#selector(settingBaseFunctionRemindFarilure(sender:)), with: sender, afterDelay: 0.5)
             return
         }
@@ -56,17 +56,17 @@ class VPBaseFunctionRemindController: UIViewController  , UITableViewDelegate , 
             }
             switch settingFunctionCompleteState {
             case .functionCompleteUnknown:
-                _ = AppDelegate.showHUD(message: "没有此功能", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
+                _ = AppDelegate.showHUD(message: "No such feature", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
                 fallthrough
             case .functionCompleteFailure:
                 self?.perform(#selector(self?.settingBaseFunctionRemindFarilure(sender:)), with: sender, afterDelay: 0.5)
-                _ = AppDelegate.showHUD(message: "设置失败", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
+                _ = AppDelegate.showHUD(message: "Setup failed", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
             case .functionCompleteOpen:
-                _ = AppDelegate.showHUD(message: "设置成功，已经开启", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
+                _ = AppDelegate.showHUD(message: "Set up successfully, has been turned on", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
             case .functionCompleteClose:
-                _ = AppDelegate.showHUD(message: "设置成功，已经关闭", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
+                _ = AppDelegate.showHUD(message: "Set up successfully, has been closed", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
             case .functionCompleteComplete:
-                _ = AppDelegate.showHUD(message: "设置完成闭", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
+                _ = AppDelegate.showHUD(message: "Set up and close", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
             }
         }
     }

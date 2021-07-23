@@ -15,7 +15,7 @@ class VPNewAlarmCell: UITableViewCell {
             timeLabel.text = (newValue?.alarmHour)! + ":" + (newValue?.alarmMinute)!
             alarmSwitch.isOn = UInt((newValue?.alarmState)!) == 1
             
-            if UInt((newValue?.repeatState)!) == 0 {//单次提醒
+            if UInt((newValue?.repeatState)!) == 0 {//Single reminder
                 alarmSwitch.isHidden = true
                 repeatLabel.text = newValue?.alarmDate
             }else {
@@ -26,10 +26,10 @@ class VPNewAlarmCell: UITableViewCell {
                 alarmImageView.image = UIImage(named: "clockP-select")
                 return
             }
-            //下边的代码自己优化吧，我主要是实现一个方式，手环上的场景标签和App端是一一对应的，根据这里边的切图，你们可以自己重新设计尺寸和颜色等
+            //Optimize the code below. I mainly implement a way. The scene label on the bracelet and the App terminal are one-to-one correspondence. According to the cut pictures here, you can redesign the size and color by yourself.
             var tbyte:[UInt8] = Array(repeating: 0x00, count: 20)
             VPBleCentralManage.sharedBleManager().peripheralModel.deviceFuctionData.copyBytes(to: &tbyte, count: tbyte.count)
-            if (tbyte[17] == 1) {//对应不同的UI，现在只有两种
+            if (tbyte[17] == 1) {//Corresponding to different UI, now there are only two
                 let imageName = String(format: "alarmLabelJ%d_select", Int((newValue?.alarmScene)!)!)
                 alarmImageView.image = UIImage(named: imageName)
             }else if (tbyte[17] == 2) {

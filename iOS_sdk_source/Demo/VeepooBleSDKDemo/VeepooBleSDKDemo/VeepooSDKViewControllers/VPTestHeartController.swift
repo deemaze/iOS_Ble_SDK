@@ -22,7 +22,8 @@ class VPTestHeartController: UIViewController,UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "心率"
+//        title = "心率"
+        title = "Heart rate"
         obtainOneDayHeartData()
         // Do any additional setup after loading the view.
     }
@@ -42,7 +43,8 @@ class VPTestHeartController: UIViewController,UITableViewDelegate, UITableViewDa
     @IBAction func startTestHeartAction(_ sender: UIButton) {//测试心率,测试过程中，开发者要考虑一下，蓝牙中断的情况，细节的逻辑要考虑清楚
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
-            currentHeartValueLabel.text = "当前心率值: "
+//            currentHeartValueLabel.text = "当前心率值: "
+            currentHeartValueLabel.text = "Current heart rate: "
         }
         unowned let weakSelf = self
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKTestHeartStart(sender.isSelected) { (testHeartState, heartValue) in
@@ -50,22 +52,28 @@ class VPTestHeartController: UIViewController,UITableViewDelegate, UITableViewDa
             if  sender.isSelected {
                 switch testHeartState {
                 case .start: //测试心率过程中的状态变化 //开始检测心率，还没有测出结果
-                    _ = AppDelegate.showHUD(message: "正在做测试准备，请保持正确姿势", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+//                    _ = AppDelegate.showHUD(message: "正在做测试准备，请保持正确姿势", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                    _ = AppDelegate.showHUD(message: "Preparing for the test, please keep the correct posture", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                 case .testing: //正在检测心率，已经测出心率值
-                    weakSelf.currentHeartValueLabel.text = "当前心率值:" + String(heartValue)
+//                    weakSelf.currentHeartValueLabel.text = "当前心率值:" + String(heartValue)
+                    weakSelf.currentHeartValueLabel.text = "Current heart rate:" + String(heartValue)
                 case .notWear: //佩戴检测没有通过，测试已经结束
-                    _ = AppDelegate.showHUD(message: "佩戴检测未通过", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+//                    _ = AppDelegate.showHUD(message: "佩戴检测未通过", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                    _ = AppDelegate.showHUD(message: "Wearing test failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
                 case .deviceBusy: //设备正忙不能测试了，测试已经结束
-                    _ = AppDelegate.showHUD(message: "设备端正在操作", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+//                    _ = AppDelegate.showHUD(message: "设备端正在操作", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                    _ = AppDelegate.showHUD(message: "Device side is operating", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
                 case .over: //测试正常结束，人为结束
-                    _ = AppDelegate.showHUD(message: "测试结束", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+//                    _ = AppDelegate.showHUD(message: "测试结束", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                    _ = AppDelegate.showHUD(message: "End of test", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
                 }
             }else {
                 if testHeartState == .over {
-                    _ = AppDelegate.showHUD(message: "测试结束", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+//                    _ = AppDelegate.showHUD(message: "测试结束", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                    _ = AppDelegate.showHUD(message: "End of test", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                 }
             }
         }
@@ -117,7 +125,8 @@ class VPTestHeartController: UIViewController,UITableViewDelegate, UITableViewDa
             return cell!
         }
         
-        cell?.detailTextLabel?.text = "心率" + subHeartDict["heartValue"]! + "/运动量" + subHeartDict["sportValue"]! + "/步数" + subHeartDict["stepValue"]! + "/距离" + subHeartDict["disValue"]! + "/卡路里" + subHeartDict["calValue"]!
+//        cell?.detailTextLabel?.text = "心率" + subHeartDict["heartValue"]! + "/运动量" + subHeartDict["sportValue"]! + "/步数" + subHeartDict["stepValue"]! + "/距离" + subHeartDict["disValue"]! + "/卡路里" + subHeartDict["calValue"]!
+        cell?.detailTextLabel?.text = "Heart rate" + subHeartDict["heartValue"]! + "/Amount of exercise" + subHeartDict["sportValue"]! + "/Step count" + subHeartDict["stepValue"]! + "/distance" + subHeartDict["disValue"]! + "/Calories" + subHeartDict["calValue"]!
         cell?.detailTextLabel?.adjustsFontSizeToFitWidth = true
         
         return cell!

@@ -26,12 +26,12 @@ class VPModifyPasswordController: UIViewController, UITextFieldDelegate {
     
     @IBAction func modifyDevicePassword(_ sender: UIButton) {
         if currentPassword.text != VPBleCentralManage.sharedBleManager().peripheralModel.devicePassword {
-            _ = AppDelegate.showHUD(message: "当前密码不匹配", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "The current password does not match", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         
-        if modifyPassword.text?.count != 4 {//这里要在加个是否全部是数字组成，才严谨，开发者自己写吧
-            _ = AppDelegate.showHUD(message: "密码必须为4位数字组成", hudModel: MBProgressHUDModeText, showView: view)
+        if modifyPassword.text?.count != 4 {//It’s rigorous to add whether it’s all numbers. Developers can write it by themselves.
+            _ = AppDelegate.showHUD(message: "Password must be 4 digits", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         
@@ -39,9 +39,9 @@ class VPModifyPasswordController: UIViewController, UITextFieldDelegate {
         VPBleCentralManage.sharedBleManager().veepooSDKSynchronousPassword(with: .SettingPasswordType, password: modifyPassword.text) { (resultType) in
             switch resultType {
             case .resetSuccess:
-                _ = AppDelegate.showHUD(message: "设置成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Set successfully", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             default:
-                _ = AppDelegate.showHUD(message: "设置失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Setup failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             }
         }
     }

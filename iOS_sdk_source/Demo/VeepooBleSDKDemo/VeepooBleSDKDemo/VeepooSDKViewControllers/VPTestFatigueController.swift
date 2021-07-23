@@ -27,38 +27,38 @@ class VPTestFatigueController: UIViewController {
         var tbyte:[UInt8] = Array(repeating: 0x00, count: 20)
         VPBleCentralManage.sharedBleManager().peripheralModel.deviceFuctionData.copyBytes(to: &tbyte, count: tbyte.count)
         if tbyte[7] != 1 {//先判断一下是否有这个功能
-            _ = AppDelegate.showHUD(message: "手环没有疲劳度功能", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "The bracelet has no fatigue function", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
-            fatigueStateLabel.text = "疲劳度状态: "
-            testFatigueProgressLabel.text = "测试进度:0%"
+            fatigueStateLabel.text = "Fatigue state: "
+            testFatigueProgressLabel.text = "Test progress:0%"
         }
         
         unowned let weakSelf = self
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKTestFatigueStart(sender.isSelected) { (testFatigueState, progress, fatigueValue) in
             if sender.isSelected {
-                weakSelf.testFatigueProgressLabel.text = "测试进度:" + String(progress) + "%"
-                weakSelf.fatigueStateLabel.text = "疲劳度状态: " + String(fatigueValue)
+                weakSelf.testFatigueProgressLabel.text = "Test progress:" + String(progress) + "%"
+                weakSelf.fatigueStateLabel.text = "Fatigue state: " + String(fatigueValue)
                 switch testFatigueState {
                 case .testing://正在测试中
-                    print("正在测试中")
+                    print("We are tested")
                 case .deviceBusy:
-                    _ = AppDelegate.showHUD(message: "设备正忙，结束测试", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                    _ = AppDelegate.showHUD(message: "The device is busy, end the test", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
                 case .testFail:
-                    _ = AppDelegate.showHUD(message: "测试失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                    _ = AppDelegate.showHUD(message: "Test failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
                 case .testInterrupt:
-                    _ = AppDelegate.showHUD(message: "人为结束测试", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                    _ = AppDelegate.showHUD(message: "Artificial end of the test", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
                 case .complete:
-                    _ = AppDelegate.showHUD(message: "测试已经完成", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                    _ = AppDelegate.showHUD(message: "The test has been completed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
                 case .noFunction:
-                    _ = AppDelegate.showHUD(message: "设备暂时没有此功能", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                    _ = AppDelegate.showHUD(message: "The device does not have this function temporarily", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
                 }
             }

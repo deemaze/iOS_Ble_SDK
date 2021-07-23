@@ -6,7 +6,7 @@
 //  Copyright © 2017年 zc.All rights reserved.
 //
 
-//写的有点啰嗦了,具体页面就不要看了，主要看功能实现的逻辑，星期一到星期日的weekBtn.tag一次为2^0至2^6，把所有选择的星期异或如选择了周一和周三就 2^0 | 2^2取得的值就是alarmModel.repeatState的值了，如果都没有选alarmModel.repeatState = 0，如果单次设置失败，可能是选择的日期比当前的日期早，场景图标demo中有两套，根据你们手环上的图标去对应选择，场景为0默认闹钟（这个是通用的），其他的依次顺序为1-20，不要混掉，手环端是根据这个一一对应的
+//The writing is a bit verbose, so don’t read the specific pages. It mainly depends on the logic of the function implementation. The weekBtn.tag from Monday to Sunday is 2^0 to 2^6, and all selected weeks are XORed as if Monday and The value obtained on Wednesday 2^0 | 2^2 is the value of alarmModel.repeatState. If alarmModel.repeatState = 0 is not selected, if the single setting fails, the selected date may be earlier than the current date. The scene icon demo There are two sets, according to the icon on your bracelet to choose the corresponding, the scene is 0 default alarm (this is common), the other order is 1-20, don’t mix it up, the bracelet end is one-to-one correspondence based on this of
 
 import UIKit
 
@@ -14,7 +14,7 @@ class VPEditNewAlarmController: UIViewController,UIPickerViewDelegate,UIPickerVi
 
     var callBackBlock: (() -> Void)?
 
-    var isAdd: Bool = false //是添加闹钟还是边界
+    var isAdd: Bool = false //Add an alarm or a border
 
     var alarmModel: VPDeviceNewAlarmModel? {
         willSet {
@@ -30,17 +30,17 @@ class VPEditNewAlarmController: UIViewController,UIPickerViewDelegate,UIPickerVi
     
     var hour = 0, minute = 0
     
-    var showScene: Bool = true //是否显示或者隐藏场景
+    var showScene: Bool = true //Whether to show or hide the scene
     
     let indexPathOneRow:CGFloat = 45.0, indexPathTwoRow:CGFloat = 80.0, IndexPathThreeTopHeight:CGFloat = 10.0
     
-    let repeatWeekArray = ["周日","周六","周五","周四","周三","周二","周一"]
-    let alarmLabelCount = 20 //闹钟场景标签除了默认其他的总数
+    let repeatWeekArray = ["Sunday","Saturday","Friday","Thursday","Wednesday","Tuesday","Monday"]
+    let alarmLabelCount = 20 //The total number of alarm scene tags in addition to the default
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = isAdd ? "添加闹钟" : "编辑闹钟"
+        title = isAdd ? "Add alarm" : "Edit alarm"
         timePickerView.selectRow(hour, inComponent: 0, animated: false)
         timePickerView.selectRow(minute, inComponent: 1, animated: false)
         self.setEditAlarmControllerUI()
@@ -70,17 +70,17 @@ class VPEditNewAlarmController: UIViewController,UIPickerViewDelegate,UIPickerVi
         saveLabel.font = UIFont.systemFont(ofSize: 17)
         saveLabel.textColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
         saveLabel.textAlignment = .center
-        saveLabel.text = "开始设置"
+        saveLabel.text = "Set up"
         delectView.addSubview(saveLabel)
         
         //indexPath.row == 0 的视图
-        repeatTitleLabel.text = "重复"
+        repeatTitleLabel.text = "repeat"
         repeatTitleLabel.font = UIFont.boldSystemFont(ofSize: 18)
         repeatTitleLabel.textAlignment = .left
         repeatTitleLabel.textColor = #colorLiteral(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
         
         repeatDetailLabel.frame = CGRect(x: repeatTitleLabel.zc_right, y: 0, width: Width - repeatTitleLabel.zc_right - 30, height: repeatTitleLabel.zc_height)
-        repeatDetailLabel.text = "周一"
+        repeatDetailLabel.text = "on Monday"
         repeatDetailLabel.textColor = repeatTitleLabel.textColor
         repeatDetailLabel.font = UIFont.boldSystemFont(ofSize: 15)
         repeatDetailLabel.adjustsFontSizeToFitWidth = true
@@ -114,7 +114,7 @@ class VPEditNewAlarmController: UIViewController,UIPickerViewDelegate,UIPickerVi
             
             let subIndex: String.Index = weekString!.index(weekString!.startIndex, offsetBy:i)
             let endIndex: String.Index = weekString!.index(after: subIndex)
-            let subWeekString = weekString?.substring(with:subIndex..<endIndex)//截取某一个范围内的字符
+            let subWeekString = weekString?.substring(with:subIndex..<endIndex)//Intercept characters in a certain range
             if subWeekString == "1" {
                 weekBtn.isSelected = true
             }
@@ -124,7 +124,7 @@ class VPEditNewAlarmController: UIViewController,UIPickerViewDelegate,UIPickerVi
         //indexPath.row == 2 的视图
         sceneTitleLabel.frame = repeatTitleLabel.frame
         sceneTitleLabel.textColor = repeatTitleLabel.textColor
-        sceneTitleLabel.text = "闹钟标签"
+        sceneTitleLabel.text = "Alarm clock label"
         sceneTitleLabel.font = UIFont.systemFont(ofSize: 18)
         sceneImageView.frame = CGRect(x: Width - 30 - 25, y: sceneTitleLabel.center.y - 12.5, width: 25, height: 25)
         sceneImageView.image = UIImage(named: "clockP-select")
@@ -159,7 +159,7 @@ class VPEditNewAlarmController: UIViewController,UIPickerViewDelegate,UIPickerVi
         }
     }
     
-    @objc func selectRepeatWeekAction(sender: UIButton)  {//选择星期
+    @objc func selectRepeatWeekAction(sender: UIButton)  {//Select day of the week
         sender.isSelected = !sender.isSelected;
         print(sender.tag)
         var k = 0
@@ -174,14 +174,14 @@ class VPEditNewAlarmController: UIViewController,UIPickerViewDelegate,UIPickerVi
         editTableView.reloadRows(at: [indexPath], with: .none)
     }
     
-    func getAlarmSceneHeigth() -> CGFloat {//得到场景模块的高度
+    func getAlarmSceneHeigth() -> CGFloat {//Get the height of the scene module
         let leftBorder:CGFloat = 10;
         let btnWidth:CGFloat = (view.frame.size.width - leftBorder*2)/9 - 10
         let topY:CGFloat = (btnWidth + 10)*((CGFloat(alarmLabelCount))/9+1) + 10
         return topY
     }
     
-    @objc func selectSceneAction(sender: UIButton) {//场景选择
+    @objc func selectSceneAction(sender: UIButton) {//Scene selection
         for sceneBtn:UIButton in sceneBtns {
             if sceneBtn.tag != sender.tag {
                 sceneBtn.isSelected = false
@@ -213,11 +213,11 @@ class VPEditNewAlarmController: UIViewController,UIPickerViewDelegate,UIPickerVi
     func getAlarmRemindWeekOrDate()  {
         if  Int((alarmModel?.repeatState)!) != 0 {
             repeatDetailLabel.text = alarmModel?.getRepeatWeek()
-            repeatTitleLabel.text = "重复"
+            repeatTitleLabel.text = "repeat"
             return ;
         }
-        repeatTitleLabel.text = "提醒日期"
-        if alarmModel?.alarmDate == "0000-00-00" || Int((alarmModel?.alarmState)!) == 0 {//如果没有日期或者已经提醒过
+        repeatTitleLabel.text = "Reminder date"
+        if alarmModel?.alarmDate == "0000-00-00" || Int((alarmModel?.alarmState)!) == 0 {//If there is no date or it has been reminded
             repeatDetailLabel.text = alarmModel?.alarmDate
         }
     }
@@ -266,7 +266,7 @@ class VPEditNewAlarmController: UIViewController,UIPickerViewDelegate,UIPickerVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         cell.selectionStyle = .none
-        if indexPath.row == 0 && indexPath.section == 0 {//重复提醒
+        if indexPath.row == 0 && indexPath.section == 0 {//Repeat reminder
             cell.contentView.addSubview(repeatTitleLabel)
             cell.contentView.addSubview(repeatDetailLabel)
             
@@ -292,7 +292,7 @@ class VPEditNewAlarmController: UIViewController,UIPickerViewDelegate,UIPickerVi
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.row == 0 && indexPath.section == 0 {//选择日期,先给你写个随机的，大概意思就是这意思
+        if indexPath.row == 0 && indexPath.section == 0 {//Choose a date, first write you a random one, which probably means that
             repeatDetailLabel.text = String(format: "%04d-%02d-%02d",2021,arc4random()%12 + 1 ,arc4random() % 31)
             alarmModel?.alarmDate = repeatDetailLabel.text
         }else if (indexPath.row == 0 && indexPath.section == 1) {
@@ -307,7 +307,7 @@ class VPEditNewAlarmController: UIViewController,UIPickerViewDelegate,UIPickerVi
             }, completion: { (finished) in
                 tableView.reloadData()
             })
-        }else if (indexPath.row == 0 && indexPath.section == 2) {//修改闹钟
+        }else if (indexPath.row == 0 && indexPath.section == 2) {//Modify alarm
             guard let callBackBlock = callBackBlock else {
                 return
             }

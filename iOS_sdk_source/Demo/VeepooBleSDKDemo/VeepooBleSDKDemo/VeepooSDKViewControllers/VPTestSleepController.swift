@@ -26,7 +26,7 @@ class VPTestSleepController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "睡眠"
+        title = "Sleep"
         if VPBleCentralManage
             .sharedBleManager()?.peripheralModel.sleepType == 1 {//精准睡眠
             sleepDayIndex = 0;
@@ -75,22 +75,22 @@ class VPTestSleepController: UIViewController, UITableViewDelegate, UITableViewD
             let sleepModel = sleepArray[indexPath.section] as! VPAccurateSleepModel
             
             if indexPath.row == 0 {//入睡时间
-                cell?.textLabel?.text = "入睡时间"
+                cell?.textLabel?.text = "Time to fall asleep"
                 cell?.detailTextLabel?.text = sleepModel.sleepTime
             }else if (indexPath.row == 1) {
-                cell?.textLabel?.text = "起床时间"
+                cell?.textLabel?.text = "Wake up time"
                 cell?.detailTextLabel?.text = sleepModel.wakeTime
             }else if (indexPath.row == 2) {//总的睡眠时间就是深睡时间加上浅睡时间
-                cell?.textLabel?.text = "深睡时间"
+                cell?.textLabel?.text = "Deep sleep time"
                 cell?.detailTextLabel?.text = sleepModel.deepDuration
             }else if (indexPath.row == 3) {
-                cell?.textLabel?.text = "浅睡时间"
+                cell?.textLabel?.text = "Light sleep time"
                 cell?.detailTextLabel?.text = sleepModel.lightDuration
             }else if (indexPath.row == 4) {
-                cell?.textLabel?.text = "苏醒次数"
+                cell?.textLabel?.text = "Awakening times"
                 cell?.detailTextLabel?.text = sleepModel.getUpTimes
             }else if (indexPath.row == 5) {//深浅睡眠是由0、1和2组成的字符串，每一个长度代表5分钟，0是表示当时的5分钟是浅睡，1代表深睡，2代表苏醒
-                cell?.textLabel?.text = "睡眠曲线"
+                cell?.textLabel?.text = "Sleep curve"
                 cell?.detailTextLabel?.text = sleepModel.sleepLine
             }
             
@@ -101,22 +101,22 @@ class VPTestSleepController: UIViewController, UITableViewDelegate, UITableViewD
         let sleepDict = sleepArray[indexPath.section] as! [String : String]
         
         if indexPath.row == 0 {//入睡时间
-            cell?.textLabel?.text = "入睡时间"
+            cell?.textLabel?.text = "Time to fall asleep"
             cell?.detailTextLabel?.text = sleepDict["SLEEP_TIME"]
         }else if (indexPath.row == 1) {
-            cell?.textLabel?.text = "起床时间"
+            cell?.textLabel?.text = "Wake up time"
             cell?.detailTextLabel?.text = sleepDict["WAKE_TIME"]
         }else if (indexPath.row == 2) {//总的睡眠时间就是深睡时间加上浅睡时间
-            cell?.textLabel?.text = "深睡时间"
+            cell?.textLabel?.text = "Deep sleep time"
             cell?.detailTextLabel?.text = sleepDict["DEEP_HOUR"]
         }else if (indexPath.row == 3) {
-            cell?.textLabel?.text = "浅睡时间"
+            cell?.textLabel?.text = "Light sleep time"
             cell?.detailTextLabel?.text = sleepDict["LIGHT_HOUR"]
         }else if (indexPath.row == 4) {
-            cell?.textLabel?.text = "苏醒次数"
+            cell?.textLabel?.text = "Awakening times"
             cell?.detailTextLabel?.text = sleepDict["WakeUpTime"]
         }else if (indexPath.row == 5) {//深浅睡眠是由0、1和2组成的字符串，每一个长度代表5分钟，0是表示当时的5分钟是浅睡，1代表深睡，2代表苏醒
-            cell?.textLabel?.text = "睡眠曲线"
+            cell?.textLabel?.text = "Sleep curve"
             cell?.detailTextLabel?.text = sleepDict["SLE_LINE"]
         }
         return cell!

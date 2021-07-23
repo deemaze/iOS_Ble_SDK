@@ -19,9 +19,9 @@ class VPTemperatureViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "体温数据读取"
+        title = "Body temperature data reading"
         support = VPBleCentralManage.sharedBleManager()?.peripheralModel.temperatureType != 0
-        supportFunctionLabel.text = support ? "是" : "否"
+        supportFunctionLabel.text = support ? "Yes" : "No"
         
         if support {
             VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSDKSettingBaseFunctionType(VPSettingBaseFunctionSwitchType.automaticTemperatureTest, settingState: .readFunctionState, complete: { [weak self](state) in
@@ -31,10 +31,10 @@ class VPTemperatureViewController: UIViewController {
         }
     }
 
-    // 读取自动测量数据
+    // Read automatic measurement data
     @IBAction func readAutoTestDataBtnClick(_ sender: UIButton) {
-        // 读取数据完成后存储在数据库中，直接从数据库中拿数据
-        // 注意⚠️不要与hrv/血氧/日常数据等并发读取
+        // After the data is read, it is stored in the database, and the data is directly taken from the database
+        // Note⚠️Do not read concurrently with hrv/blood oxygen/daily data, etc.
         VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSdkStartReadDeviceTemperatureData({ [weak self] (readDeviceBaseDataState, totalDay, currentReadDayNumber, readCurrentDayProgress) in
             switch readDeviceBaseDataState {
             case .start:
@@ -45,13 +45,13 @@ class VPTemperatureViewController: UIViewController {
                 self?.getDataFromDatabase()
                 break
             case .invalid:
-                // 设备不支持
+                // Device does not support
                 break
             default:
                 break
             }
         })
-        // 如果自行设计数据库存储，用下面这种方式读
+        // If you design your own database storage, use the following way to read
 //        VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSDK_readDeviceAutoTestTemperatureData(withDayNumber: 0, maxPackage: 1, result: { (tempDataArray, totalPackage, currentReadPackage) in
 //            guard  let tempDataArray = tempDataArray  else {
 //                return
@@ -70,25 +70,25 @@ class VPTemperatureViewController: UIViewController {
         print(arr2?.count as Any)
     }
     
-    // 手动测量体温
+    // Manual temperature measurement
     @IBAction func manualTestDataBtnClick(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSDK_temperatureTestStart(sender.isSelected, result: { [weak self](state, enable, progress, tempValue) in
             if state == .unsupported {
-                _ = AppDelegate.showHUD(message: "设备不支持该功能", hudModel: MBProgressHUDModeText, showView: self!.view)
+                _ = AppDelegate.showHUD(message: "The device does not support this function", hudModel: MBProgressHUDModeText, showView: self!.view)
             }
             if state == .close {
-                print("结束测量")
+                print("End measurement")
             }
             if state == .open {
                 if enable {
-                    print("进度:\(progress), 体温:\(Double(tempValue)/Double(10))°C")
+                    print("schedule:\(progress), body temperature:\(Double(tempValue)/Double(10))°C")
                     if progress == 100 {
-                        _ = AppDelegate.showHUD(message: "测量结束，体温为:\(Double(tempValue)/Double(10))°C", hudModel: MBProgressHUDModeText, showView: self!.view)
+                        _ = AppDelegate.showHUD(message: "After the measurement, the body temperature is:\(Double(tempValue)/Double(10))°C", hudModel: MBProgressHUDModeText, showView: self!.view)
                         self!.manualTestDataBtn.isSelected = false
                     }
                 }else{
-                    print("设备正忙")
+                    print("Device is busy")
                 }
             }
         })
@@ -96,18 +96,18 @@ class VPTemperatureViewController: UIViewController {
     
     @IBAction func monitorSwitchAction(_ sender: UISwitch) {
         if support {
-            // 单位设置
+            // Unit settings
 //            VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSDKSettingBaseFunctionType(VPSettingBaseFunctionSwitchType.temperatureUnit, settingState: sender.isOn ? .settingFunctionOpen : .settingFunctionClose, complete: nil)
-            // 体温自动监测开关
+            // Automatic temperature monitoring switch
             VPBleCentralManage.sharedBleManager()?.peripheralManage.veepooSDKSettingBaseFunctionType(VPSettingBaseFunctionSwitchType.automaticTemperatureTest, settingState: sender.isOn ? .settingFunctionOpen : .settingFunctionClose, complete: { [weak self](state) in
                 switch state {
                 case .functionCompleteUnknown:
                     break
                 case .functionCompleteOpen:
-                    _ = AppDelegate.showHUD(message: "功能已开启", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
+                    _ = AppDelegate.showHUD(message: "Feature is on", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
                     break
                 case .functionCompleteClose:
-                    _ = AppDelegate.showHUD(message: "功能已关闭", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
+                    _ = AppDelegate.showHUD(message: "Feature is off", hudModel: MBProgressHUDModeText, showView: (self?.view)!)
                     break
                 case .functionCompleteFailure:
                     break
@@ -116,7 +116,7 @@ class VPTemperatureViewController: UIViewController {
                 }
             })
         }else{
-            _ = AppDelegate.showHUD(message: "设备不支持该功能", hudModel: MBProgressHUDModeText, showView: self.view)
+            _ = AppDelegate.showHUD(message: "The device does not support this function", hudModel: MBProgressHUDModeText, showView: self.view)
         }
     }
 }

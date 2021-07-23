@@ -25,15 +25,15 @@ class VPDFUController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "固件升级"
+        title = "Firmware upgrade"
         // Do any additional setup after loading the view.
-        currentVersionLabel.text = "当前版本: " + VPBleCentralManage.sharedBleManager().peripheralModel.deviceVersion
+        currentVersionLabel.text = "current version: " + VPBleCentralManage.sharedBleManager().peripheralModel.deviceVersion
         
         if (VPBleCentralManage.sharedBleManager().peripheralModel.deviceNetVersion == nil) {
-            updateVersionLabel.text = "升级版本: " + "没有新版本"
+            updateVersionLabel.text = "Upgrade version: " + "No new version"
         }else {
             //下边是升级版本和升级新固件描述
-            updateVersionLabel.text = "升级版本: " + VPBleCentralManage.sharedBleManager().peripheralModel.deviceNetVersion
+            updateVersionLabel.text = "updated version: " + VPBleCentralManage.sharedBleManager().peripheralModel.deviceNetVersion
             updateDesTextView.text = VPBleCentralManage.sharedBleManager().peripheralModel.deviceNetVersionDes.replacingOccurrences(of: "$", with: "\n")
         }
     }
@@ -43,28 +43,28 @@ class VPDFUController: UIViewController {
             return
         }
         if (VPBleCentralManage.sharedBleManager().peripheralModel.deviceNetVersion == nil) {
-            dfuProgressLabel.text = "没有新固件，暂时不用升级"
+            dfuProgressLabel.text = "No new firmware, no need to upgrade"
             return
         }
         
-        dfuProgressLabel.text = "准备升级"
+        dfuProgressLabel.text = "Ready to upgrade"
         sender.isSelected = true
         unowned let weakSelf = self
         dufOperationManager.veepooSDKStartDfu { (dfuProgress, deviceDFUState) in
             switch deviceDFUState {
             case .fileNotExist:
                 sender.isSelected = false
-                _ = AppDelegate.showHUD(message: "升级文件不存在，不能升级", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "The upgrade file does not exist and cannot be upgraded", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             case .start:
-                _ = AppDelegate.showHUD(message: "开始升级", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Start to upgrade", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             case .updating:
-                weakSelf.dfuProgressLabel.text = "升级进度: " + String(dfuProgress) + "%"
+                weakSelf.dfuProgressLabel.text = "Upgrade progress: " + String(dfuProgress) + "%"
             case .success:
                 sender.isSelected = false
-                _ = AppDelegate.showHUD(message: "升级成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "update successed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             case .failure:
                 sender.isSelected = false
-                _ = AppDelegate.showHUD(message: "升级失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "upgrade unsuccessful", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             }
         }
     }
@@ -73,7 +73,7 @@ class VPDFUController: UIViewController {
         if sender.isSelected {
             return
         }
-        dfuProgressLabel.text = "准备升级"
+        dfuProgressLabel.text = "Ready to upgrade"
         sender.isSelected = true
         unowned let weakSelf = self
         let filePath = Bundle.main.path(forResource: "A63_00630022_8065_fw_encryptandsign.bin", ofType: nil)
@@ -81,17 +81,17 @@ class VPDFUController: UIViewController {
             switch deviceDFUState {
             case .fileNotExist:
                 sender.isSelected = false
-                _ = AppDelegate.showHUD(message: "升级文件不存在，不能升级", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "The upgrade file does not exist and cannot be upgraded", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             case .start:
-                _ = AppDelegate.showHUD(message: "开始升级", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Start to upgrade", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             case .updating:
-                weakSelf.dfuProgressLabel.text = "升级进度: " + String(dfuProgress) + "%"
+                weakSelf.dfuProgressLabel.text = "Upgrade progress: " + String(dfuProgress) + "%"
             case .success:
                 sender.isSelected = false
-                _ = AppDelegate.showHUD(message: "升级成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "update successed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             case .failure:
                 sender.isSelected = false
-                _ = AppDelegate.showHUD(message: "升级失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "upgrade unsuccessful", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             }
         }
     }

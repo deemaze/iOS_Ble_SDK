@@ -26,17 +26,17 @@ class VPSettingBrightController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "亮度调节设置"
+        title = "Brightness adjustment settings"
         
         var tbyte:[UInt8] = Array(repeating: 0x00, count: 20)
         VPBleCentralManage
             .sharedBleManager().peripheralModel.deviceFuctionData.copyBytes(to: &tbyte, count: tbyte.count)
         if tbyte[13] != 1 {//先判断一下是否有这个功能
-            _ = AppDelegate.showHUD(message: "手环没有亮度调节功能", hudModel: MBProgressHUDModeText, showView: view)
+            _ = AppDelegate.showHUD(message: "The bracelet has no brightness adjustment function", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         
-        //开始要先读取手环的，App上展示以手环为准,读取也要有个模型，模型只要有就可以，不能为nil
+        //At the beginning, you need to read the bracelet first. The display on the App is based on the bracelet, and there must be a model for reading. As long as there is a model, it cannot be nil.
         let brightModel = VPDeviceBrightModel()
         
         //开始读取
@@ -46,29 +46,29 @@ class VPSettingBrightController: UIViewController {
                 print("error")
                 return
             }
-            _ = AppDelegate.showHUD(message: "读取成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Read successfully", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             weakSelf.firstBrightValueSlider.value = Float(readBrightModel.maxBrightValue)
             weakSelf.otherBrightValueSlider.value = Float(readBrightModel.maxBrightValue)
-            weakSelf.brightStartHourLabel.text = "起始小时:" + String(describing: readBrightModel.firstBrightStartHour)
+            weakSelf.brightStartHourLabel.text = "Start hour:" + String(describing: readBrightModel.firstBrightStartHour)
             weakSelf.brightStartHourSlider.value = Float(readBrightModel.firstBrightStartHour)
             
-            weakSelf.brightStartMinuteLabel.text = "起始分钟:" + String(describing: readBrightModel.firstBrightStartMinute)
+            weakSelf.brightStartMinuteLabel.text = "Start minute:" + String(describing: readBrightModel.firstBrightStartMinute)
             weakSelf.brightStartMinuteSlider.value = Float(readBrightModel.firstBrightStartMinute)
             
-            weakSelf.brightEndHourLabel.text = "结束小时:" + String(describing: readBrightModel.firstBrightEndHour)
+            weakSelf.brightEndHourLabel.text = "End hour:" + String(describing: readBrightModel.firstBrightEndHour)
             weakSelf.brightEndHourSlider.value = Float(readBrightModel.firstBrightEndHour)
             
-            weakSelf.brightEndMinuteLabel.text = "结束分钟:" + String(describing: readBrightModel.firstBrightEndMinute)
+            weakSelf.brightEndMinuteLabel.text = "End minute:" + String(describing: readBrightModel.firstBrightEndMinute)
             weakSelf.brightEndMinuteSlider.value = Float(readBrightModel.firstBrightEndMinute)
             
-            weakSelf.firstBrightValueLabel.text = "第一个亮度:" + String(describing: readBrightModel.firstBrightValue)
+            weakSelf.firstBrightValueLabel.text = "First brightness:" + String(describing: readBrightModel.firstBrightValue)
             weakSelf.firstBrightValueSlider.value = Float(readBrightModel.firstBrightValue)
             
-            weakSelf.otherBrightValueLabel.text = "其他档位:" + String(describing: readBrightModel.otherBrightValue)
+            weakSelf.otherBrightValueLabel.text = "Other gears:" + String(describing: readBrightModel.otherBrightValue)
             
             weakSelf.otherBrightValueSlider.value = Float(readBrightModel.otherBrightValue)
         }) {
-            _ = AppDelegate.showHUD(message: "读取失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Read failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }
         // Do any additional setup after loading the view.
     }
@@ -77,17 +77,17 @@ class VPSettingBrightController: UIViewController {
         let sliderValue = UInt16(sender.value)
         switch sender.tag {
         case 0:
-            brightStartHourLabel.text = "起始小时:" + String(sliderValue)
+            brightStartHourLabel.text = "Start hour:" + String(sliderValue)
         case 1:
-            brightStartMinuteLabel.text = "起始分钟:" + String(sliderValue)
+            brightStartMinuteLabel.text = "Start minute:" + String(sliderValue)
         case 2:
-            brightEndHourLabel.text = "结束小时:" + String(sliderValue)
+            brightEndHourLabel.text = "End hour:" + String(sliderValue)
         case 3:
-            brightEndMinuteLabel.text = "结束分钟:" + String(sliderValue)
+            brightEndMinuteLabel.text = "End minute:" + String(sliderValue)
         case 4:
-            firstBrightValueLabel.text = "第一个亮度:" + String(sliderValue)
+            firstBrightValueLabel.text = "First brightness:" + String(sliderValue)
         case 5:
-            otherBrightValueLabel.text = "其他档位:" + String(sliderValue)
+            otherBrightValueLabel.text = "Other gears:" + String(sliderValue)
         default:
             print("error")
         }
@@ -100,9 +100,9 @@ class VPSettingBrightController: UIViewController {
         //开始设置
         unowned let weakSelf = self;
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKSettingBright(with: brightModel, settingMode: 1, successResult: { (deviceBrightModel) in
-            _ = AppDelegate.showHUD(message: "亮度调节设置成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Brightness adjustment set successfully", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }) { 
-            _ = AppDelegate.showHUD(message: "亮度调节设置失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Brightness adjustment setting failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }
     }
     

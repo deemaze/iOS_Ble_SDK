@@ -7,14 +7,14 @@
 //
 
 /*
-此部门逻辑不是十分严谨，写这个demo主要是告诉使用SDK的开发者，如何调用接口及大体的使用逻辑，
-1.女性项目一般分为4个生理期：经期、备孕期、预产期、宝妈期
-2.在经期、备孕期、宝妈期手环都需要知道用户最后一次来月经的时间
-3.一般经期的周期，即两次月经时间的间隔，不同人的体质不同因人而异默认一般28天
-4.经期长度，即从来月经到月经消失要多少天，一般人是5-6天
-5.如果App需要做此功能，建议参考美柚和大姨妈，及网络搜索各种参数，我们仅是提供开发接口，详细的还要开发者及其产品经理去定义
+ The logic of this department is not very rigorous. The purpose of writing this demo is to tell developers who use the SDK how to call the interface and general usage logic.
+ 1. The female project is generally divided into 4 menstrual periods: menstrual period, pregnancy preparation period, expected delivery period, and motherhood period
+ 2. During menstruation, pregnancy, and motherhood, the bracelet needs to know the time of the user's last menstruation
+ 3. The cycle of a general menstrual period, that is, the interval between two menstrual periods. The physique of different people varies from person to person. The default is 28 days.
+ 4. The length of the menstrual period, that is, how many days it takes from menstruation to disappearance of menstruation, 5-6 days for the average person
+ 5. If the App needs to do this function, it is recommended to refer to Meiyou and Auntie, and search for various parameters on the Internet. We only provide the development interface, and the developer and its product manager need to define the details
 
-最后说一句，我这写的不好的不要吐槽，本身能让开发者看懂大概意思就可以了，我也是抽时间写demo的，哈哈此功能到此结束，休息一会
+ Finally, don’t complain about my bad writing. It’s enough for the developer to understand the general meaning. I also took the time to write a demo. Haha, this feature is over. Let’s take a break.
  */
 
 import UIKit
@@ -40,8 +40,8 @@ class VPFemaleSelectView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
 
     let selectPickerView:UIPickerView = UIPickerView()
     
-    let physiologicalArray = ["取消","月经期","备孕期","预产期","宝妈期"]
-    let sexArray = ["男","女"]
+    let physiologicalArray = ["Cancel","Menstrual period","Pregnancy period","Expected date","Baoma period"]
+    let sexArray = ["Male","Female"]
     
     var a = 0,b = 0,c = 0
     
@@ -68,14 +68,14 @@ class VPFemaleSelectView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         let cancelBtn = UIButton(type: .custom)
         cancelBtn.frame = CGRect(x: 10, y: 0, width: 40, height: seletctTopView.frame.height)
         cancelBtn.tag = 0
-        cancelBtn.setTitle("取消", for: .normal)
+        cancelBtn.setTitle("Cancel", for: .normal)
         cancelBtn.addTarget(self, action: #selector(cancelOrConfirmAction(sender:)), for: .touchUpInside)
         seletctTopView.addSubview(cancelBtn)
         
         let confirmBtn = UIButton(type: .custom)
         confirmBtn.frame = CGRect(x: seletctTopView.frame.width - 50, y: 0, width: 40, height: seletctTopView.frame.height)
         confirmBtn.tag = 1
-        confirmBtn.setTitle("确定", for: .normal)
+        confirmBtn.setTitle("Determine", for: .normal)
         confirmBtn.addTarget(self, action: #selector(cancelOrConfirmAction(sender:)), for: .touchUpInside)
         seletctTopView.addSubview(confirmBtn)
         
@@ -92,19 +92,19 @@ class VPFemaleSelectView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @objc func cancelOrConfirmAction(sender: UIButton) {
         if sender.tag == 1 {
-            if selectViewTitle == "生理期选择" {
+            if selectViewTitle == "Menstrual period selection" {
                 femaleModel?.femaleState = VPDeviceFemaleState(rawValue: a)!
-            }else if selectViewTitle == "最后经期日期" {
+            }else if selectViewTitle == "Date of last menstrual period" {
                 femaleModel?.lastMenstrualDate = String(format: "%04d", a + 2001) + "-" + String(format: "%02d", b + 1) + "-" + String(format: "%02d", c + 1)
-            }else if selectViewTitle == "经期周期" {
+            }else if selectViewTitle == "Menstrual cycle" {
                 femaleModel?.menstrualCircle = a + 7
-            }else if selectViewTitle == "经期正常持续天数" {
+            }else if selectViewTitle == "Normal duration of menstrual period" {
                 femaleModel?.menstrualDays = a + 1
-            }else if selectViewTitle == "宝宝生日" {
+            }else if selectViewTitle == "Baby birthday" {
                 femaleModel?.babyBirthday = String(format: "%04d", a + 2001) + "-" + String(format: "%02d", b + 1) + "-" + String(format: "%02d", c + 1)
-            }else if selectViewTitle == "宝宝性别" {
+            }else if selectViewTitle == "Baby gender" {
                 femaleModel?.isGirl = a == 1
-            }else {//预产期
+            }else {//Due date
                 femaleModel?.expectedDateOfChildbirth = String(format: "%04d", a + 2001) + "-" + String(format: "%02d", b + 1) + "-" + String(format: "%02d", c + 1)
             }
         }
@@ -114,28 +114,29 @@ class VPFemaleSelectView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     // MARK: - pickerView DataSorce和delegate
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        if selectViewTitle == "生理期选择" {
+        if selectViewTitle == "Menstrual period selection" {
             return 1
-        }else if selectViewTitle == "最后经期日期" {
+        }else if selectViewTitle == "Date of last menstrual period" {
             return 3
-        }else if selectViewTitle == "经期周期" {
+        }else if selectViewTitle == "Menstrual cycle" {
             return 1
-        }else if selectViewTitle == "经期正常持续天数" {
+        }else if selectViewTitle == "Normal duration of menstrual period" {
             return 1
-        }else if selectViewTitle == "宝宝生日" {
+        }else if selectViewTitle == "Baby birthday" {
             return 3
-        }else if selectViewTitle == "宝宝性别" {
+        }else if selectViewTitle == "Baby gender" {
             return 1
-        }else if selectViewTitle == "预产期"{//预产期
+        }else if selectViewTitle == "Due date"{//Due date
             return 3
         }
         return 0
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if selectViewTitle == "生理期选择" {//四种生理期
+        if selectViewTitle == "Menstrual period selection" {//Four physiological periods
             return 5
-        }else if selectViewTitle == "最后经期日期" || selectViewTitle == "宝宝生日" || selectViewTitle == "预产期" {//这里没有对日期进行逻辑处理，就是简单的功能实现，如出现9月份有31日的，你们自己设置的时候注意一下就好，我累了，不想写
+        }else if selectViewTitle == "Date of last menstrual period" || selectViewTitle == "Baby birthday" || selectViewTitle == "Due date" {
+            //There is no logical processing of the date here, but a simple function implementation. If there is a 31st in September, just pay attention when you set it yourself. I am tired and don’t want to write.
             if component == 0 {//（2001-2019）
                 return 19
             }else if component == 1 {
@@ -143,11 +144,11 @@ class VPFemaleSelectView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
             }else {
                 return 31
             }
-        }else if selectViewTitle == "经期周期" {//两次经期的正常间隔（7-46）
+        }else if selectViewTitle == "Menstrual cycle" {//The normal interval between menstrual periods（7-46）
             return 40
-        }else if selectViewTitle == "经期正常持续天数" {//从来月经到走（1-15）
+        }else if selectViewTitle == "Normal duration of menstrual period" {//From menstruation to walking（1-15）
             return 15
-        }else if selectViewTitle == "宝宝性别" {//男或者女
+        }else if selectViewTitle == "Baby gender" {//Male or female
             return 2
         }
         return 3
@@ -162,9 +163,9 @@ class VPFemaleSelectView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: pickerView.frame.size.width/3, height: 44))
         label.textColor = UIColor.brown
         label.textAlignment = .center
-        if selectViewTitle == "生理期选择" {//四种生理期
+        if selectViewTitle == "Menstrual period selection" {//Four physiological periods
             label.text = physiologicalArray[row]
-        }else if selectViewTitle == "最后经期日期" || selectViewTitle == "宝宝生日" || selectViewTitle == "预产期" {//这里没有对日期进行逻辑处理，就是简单的功能实现，如出现9月份有31日的，你们自己设置的时候注意一下就好，我累了，不想写
+        }else if selectViewTitle == "Date of last menstrual period" || selectViewTitle == "Baby birthday" || selectViewTitle == "Due date" {//There is no logical processing of the date here, but a simple function implementation. If there is a 31st in September, just pay attention when you set it yourself. I am tired and don’t want to write.
             if component == 0 {//（2001-2017）
                 label.text =  String(row+2001)
             }else if component == 1 {
@@ -172,11 +173,11 @@ class VPFemaleSelectView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
             }else {
                 label.text =  String(row+1)
             }
-        }else if selectViewTitle == "经期周期" {//两次经期的正常间隔（7-46）
+        }else if selectViewTitle == "Menstrual cycle" {//The normal interval between menstrual periods（7-46）
             label.text =  String(row + 7)
-        }else if selectViewTitle == "经期正常持续天数" {//从来月经到走（1-15）
+        }else if selectViewTitle == "Normal duration of menstrual period" {//From menstruation to walking（1-15）
             label.text =  String(row + 1)
-        }else if selectViewTitle == "宝宝性别" {//男或者女
+        }else if selectViewTitle == "Baby gender" {//男或者女
             label.text =  sexArray[row]
         }
         return label

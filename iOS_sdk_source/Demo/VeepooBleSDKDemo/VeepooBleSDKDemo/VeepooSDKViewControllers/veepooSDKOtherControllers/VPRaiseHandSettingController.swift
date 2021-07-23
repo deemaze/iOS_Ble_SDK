@@ -36,15 +36,15 @@ class VPRaiseHandSettingController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "翻腕亮屏"
+        title = "Turn your wrist to bright screen"
         var tbyte:[UInt8] = Array(repeating: 0x00, count: 20)
         VPBleCentralManage.sharedBleManager().peripheralModel.deviceFuctionData.copyBytes(to: &tbyte, count: tbyte.count)
-        if tbyte[11] != 1 {//先判断一下是否有这个功能
-            _ = AppDelegate.showHUD(message: "手环没有翻腕亮屏功能", hudModel: MBProgressHUDModeText, showView: view)
+        if tbyte[11] != 1 {//First judge whether it has this function
+            _ = AppDelegate.showHUD(message: "The bracelet does not have the function of turning the wrist to brighten the screen", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
         
-        //开始要先读取手环的，App上展示以手环为准,读取也要有个模型，模型只要有就可以，不能为nil
+        //At the beginning, you need to read the bracelet first. The display on the App is based on the bracelet, and there must be a model for reading. As long as there is a model, it cannot be nil.
         let raiseHandModel = VPDeviceRaiseHandModel()
         //开始读取
         unowned let weakSelf = self;
@@ -57,18 +57,18 @@ class VPRaiseHandSettingController: UIViewController {
             weakSelf.sensitiveLabel.isHidden = readRaiseHandModel.defaultSensitive == 0
             weakSelf.sensitiveSlider.isHidden = weakSelf.sensitiveLabel.isHidden
             
-            _ = AppDelegate.showHUD(message: "读取成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
-            weakSelf.startHourLabel.text = "起始小时:" + String(describing: readRaiseHandModel.raiseHandStartHour)
+            _ = AppDelegate.showHUD(message: "Read successfully", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            weakSelf.startHourLabel.text = "Start hour:" + String(describing: readRaiseHandModel.raiseHandStartHour)
             
-            weakSelf.startMinuteLabel.text = "起始分钟:" + String(describing: readRaiseHandModel.raiseHandStartMinute)
+            weakSelf.startMinuteLabel.text = "Start minute:" + String(describing: readRaiseHandModel.raiseHandStartMinute)
             
-            weakSelf.endHourLabel.text = "结束小时:" + String(describing: readRaiseHandModel.raiseHandEndHour)
+            weakSelf.endHourLabel.text = "End hour:" + String(describing: readRaiseHandModel.raiseHandEndHour)
             
-            weakSelf.endMinuteLabel.text = "结束分钟:" + String(describing: readRaiseHandModel.raiseHandEndMinute)
+            weakSelf.endMinuteLabel.text = "End minute:" + String(describing: readRaiseHandModel.raiseHandEndMinute)
             
-            weakSelf.stateLabel.text = readRaiseHandModel.raiseHandState == 0 ? "状态:关闭" : "状态:开启"
+            weakSelf.stateLabel.text = readRaiseHandModel.raiseHandState == 0 ? "Status: Off" : "Status: On"
             
-            weakSelf.sensitiveLabel.text = "灵敏度:" + String(describing: readRaiseHandModel.sensitive)
+            weakSelf.sensitiveLabel.text = "Sensitivity:" + String(describing: readRaiseHandModel.sensitive)
             
             weakSelf.startHourSlider.value = Float(readRaiseHandModel.raiseHandStartHour)
             
@@ -83,7 +83,7 @@ class VPRaiseHandSettingController: UIViewController {
             weakSelf.sensitiveSlider.value = Float(readRaiseHandModel.sensitive)
             
         }) { 
-            _ = AppDelegate.showHUD(message: "读取失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Read failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }
         
         // Do any additional setup after loading the view.
@@ -93,22 +93,22 @@ class VPRaiseHandSettingController: UIViewController {
         let sliderValue = UInt16(sender.value)
         switch sender.tag {
         case 0:
-            startHourLabel.text = "起始小时:" + String(sliderValue)
+            startHourLabel.text = "Start hour:" + String(sliderValue)
         case 1:
-            startMinuteLabel.text = "起始分钟:" + String(sliderValue)
+            startMinuteLabel.text = "Start minute:" + String(sliderValue)
         case 2:
-            endHourLabel.text = "结束小时:" + String(sliderValue)
+            endHourLabel.text = "End hour:" + String(sliderValue)
         case 3:
-            endMinuteLabel.text = "结束分钟:" + String(sliderValue)
+            endMinuteLabel.text = "End minute:" + String(sliderValue)
         case 4:
-            sensitiveLabel.text = "灵敏度:" + String(sliderValue)
+            sensitiveLabel.text = "Sensitivity:" + String(sliderValue)
         default:
             print("error")
         }
     }
     
     @IBAction func stateChangedAction(_ sender: UISegmentedControl) {
-        stateLabel.text = stateSegControl.selectedSegmentIndex == 0 ? "状态:关闭" : "状态:开启"
+        stateLabel.text = stateSegControl.selectedSegmentIndex == 0 ? "Status: Off" : "Status: On"
     }
     
     @IBAction func startSettingLongseatAction(_ sender: UIButton) {
@@ -118,9 +118,9 @@ class VPRaiseHandSettingController: UIViewController {
         //开始设置
         unowned let weakSelf = self;
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKSettingRaiseHand(with: raiseHandModel, settingMode: UInt(stateSegControl.selectedSegmentIndex), successResult: { (raiseHandModel) in
-            _ = AppDelegate.showHUD(message: "翻腕亮屏设置成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Flip the wrist and the bright screen is set successfully", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }) { 
-            _ = AppDelegate.showHUD(message: "翻腕亮屏设置失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+            _ = AppDelegate.showHUD(message: "Failed to set the bright screen on the wrist", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
         }
     }
 

@@ -33,20 +33,21 @@ class VPSyncPersonalInformationController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //同步个人信息，一般是在手环连接或者个人资料信息该表的时候同步，现在没有读取功能，只要设置成功就可以了，这个资料一般都是以App个人资料为准，所以只有设置，根据下边的设置自己可以参考
-        title = "同步个人资料"
+        // Synchronize personal information, usually when the bracelet is connected or when the personal data information table is synchronized, there is no reading function now, as long as the setting is successful, this information is generally based on the App personal data, so only settings are available. You can refer to the settings below
+        title = "Sync personal data"
     }
 
     @IBAction func sliderAction(_ sender: UISlider) {
         let changeValue = UInt16(sender.value)
         switch sender.tag {
         case 0:
-            statureLabel.text = "身高:" + String(changeValue)
+            statureLabel.text = "Height:" + String(changeValue)
         case 1:
-            weightLabel.text = "体重:" + String(changeValue)
+            weightLabel.text = "Body weight:" + String(changeValue)
         case 2:
-            birthLabel.text = "出生:" + String(changeValue)
+            birthLabel.text = "Born:" + String(changeValue)
         case 3:
-            stepTargetLabel.text = "目标:" + String(changeValue)
+            stepTargetLabel.text = "The goal:" + String(changeValue)
         default:
             print("error")
         }
@@ -54,16 +55,16 @@ class VPSyncPersonalInformationController: UIViewController {
 
     
     @IBAction func sexSegControlAction(_ sender: UISegmentedControl) {
-        sexLabel.text = sender.selectedSegmentIndex == 0 ? "性别:女" : "性别:男"
+        sexLabel.text = sender.selectedSegmentIndex == 0 ? "Gender: Female" : "Sex: Male"
     }
     
     @IBAction func startSyncAction(_ sender: UIButton) {//开始同步个人数据
         unowned let weakSelf = self
         VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKSynchronousPersonalInformation(withStature: UInt(statureSlider.value), weight: UInt(weightSlider.value), birth: UInt(birthSlider.value), sex: UInt(sexSegControl.selectedSegmentIndex), targetStep: UInt(stepTargetSlider.value)) { (syncState) in
             if syncState == 1 {
-                _ = AppDelegate.showHUD(message: "设置成功", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Set successfully", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             }else {
-                _ = AppDelegate.showHUD(message: "设置失败", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
+                _ = AppDelegate.showHUD(message: "Setup failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
             }
         }
     }
