@@ -75,6 +75,8 @@
 		67FC22BF1E68FF7D0029DED3 /* VPTestFatigueController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FC22BD1E68FF7D0029DED3 /* VPTestFatigueController.swift */; };
 		67FC22C01E68FF7D0029DED3 /* VPTestFatigueController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 67FC22BE1E68FF7D0029DED3 /* VPTestFatigueController.xib */; };
 		A7961D1F26AB023600DCC61F /* VeepooBleSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7961D1E26AB023600DCC61F /* VeepooBleSDK.framework */; };
+		A7961D2626AB16F600DCC61F /* VPTestRespirationRateController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7961D2426AB16F600DCC61F /* VPTestRespirationRateController.xib */; };
+		A7961D2726AB16F600DCC61F /* VPTestRespirationRateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7961D2526AB16F600DCC61F /* VPTestRespirationRateController.swift */; };
 		AED6550F5A15F5F576BC2162 /* Pods_VeepooBleSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75064C534A7C08FD1E8AB4B /* Pods_VeepooBleSDKDemo.framework */; };
 		FE27F0ED264A1DD50080CDA1 /* VPMapGPSTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE27F0EB264A1DD50080CDA1 /* VPMapGPSTagViewController.swift */; };
 		FE27F0EE264A1DD50080CDA1 /* VPMapGPSTagViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE27F0EC264A1DD50080CDA1 /* VPMapGPSTagViewController.xib */; };
@@ -185,6 +187,8 @@
 		8ADCC1E39C7B06805F3E9386 /* Pods-VeepooBleSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VeepooBleSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VeepooBleSDKDemo/Pods-VeepooBleSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		A75064C534A7C08FD1E8AB4B /* Pods_VeepooBleSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VeepooBleSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7961D1E26AB023600DCC61F /* VeepooBleSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VeepooBleSDK.framework; sourceTree = "<group>"; };
+		A7961D2426AB16F600DCC61F /* VPTestRespirationRateController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VPTestRespirationRateController.xib; sourceTree = "<group>"; };
+		A7961D2526AB16F600DCC61F /* VPTestRespirationRateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPTestRespirationRateController.swift; sourceTree = "<group>"; };
 		FE27F0EB264A1DD50080CDA1 /* VPMapGPSTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPMapGPSTagViewController.swift; sourceTree = "<group>"; };
 		FE27F0EC264A1DD50080CDA1 /* VPMapGPSTagViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VPMapGPSTagViewController.xib; sourceTree = "<group>"; };
 		FE65720C25B930AD00672A8B /* VPPhotoDialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPPhotoDialViewController.swift; sourceTree = "<group>"; };
@@ -248,6 +252,8 @@
 				67640D501E56CF2E008D9D71 /* veepooSDKOtherControllers */,
 				675052241E553F3F008D45BC /* VPRootViewController.swift */,
 				675052251E553F3F008D45BC /* VPRootViewController.xib */,
+				A7961D2526AB16F600DCC61F /* VPTestRespirationRateController.swift */,
+				A7961D2426AB16F600DCC61F /* VPTestRespirationRateController.xib */,
 				6750522A1E557517008D45BC /* VPScanDeviceViewController.swift */,
 				67640D481E55C22E008D9D71 /* VPMessageRemindViewController.swift */,
 				67640D4B1E5698B2008D9D71 /* VPBaseFunctionRemindController.swift */,
@@ -507,6 +513,7 @@
 				67640D541E56D248008D9D71 /* VPSyncPersonalInformationController.xib in Resources */,
 				FE65720F25B930AD00672A8B /* VPPhotoDialViewController.xib in Resources */,
 				67CA7E361EF3BAD5000D8745 /* VPEditNewAlarmController.xib in Resources */,
+				A7961D2626AB16F600DCC61F /* VPTestRespirationRateController.xib in Resources */,
 				675052271E553F3F008D45BC /* VPRootViewController.xib in Resources */,
 				FE722C0A25F5D41900EA675E /* VPFindDeviceViewController.xib in Resources */,
 				67CB1CB21E52D26E00805649 /* Assets.xcassets in Resources */,
@@ -593,6 +600,7 @@
 				672E08321E5D36ED00F60750 /* VPTestBloodController.swift in Sources */,
 				67640D571E56E1BE008D9D71 /* VPBloodPrivateSettingController.swift in Sources */,
 				67FC22BA1E68FBEE0029DED3 /* VPTestOxygenController.swift in Sources */,
+				A7961D2726AB16F600DCC61F /* VPTestRespirationRateController.swift in Sources */,
 				67B64E441EDFB5E8000549D6 /* VPTest.m in Sources */,
 				67CA7E351EF3BAD5000D8745 /* VPEditNewAlarmController.swift in Sources */,
 				67CA3B581EF25AB500203D20 /* VPDeviceCountDownController.swift in Sources */,
