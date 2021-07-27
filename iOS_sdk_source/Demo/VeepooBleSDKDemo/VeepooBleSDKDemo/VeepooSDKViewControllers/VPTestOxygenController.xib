@@ -11,6 +11,7 @@
             <connections>
                 <outlet property="currentOxygenValueLabel" destination="o1b-fC-IMR" id="ZFf-Jp-93Y"/>
                 <outlet property="currentRateValueLabel" destination="sp0-Zs-hfz" id="F3c-4M-OGf"/>
+                <outlet property="oxygenDateLabel" destination="jg5-9L-cbO" id="3ld-lR-oRR"/>
                 <outlet property="testOxygenBtn" destination="0g8-Qz-wwF" id="m77-yC-Z4h"/>
                 <outlet property="testRateBtn" destination="wgQ-X1-LWm" id="7D8-rP-ADg"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -62,10 +63,36 @@
                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="48" translatesAutoresizingMaskIntoConstraints="NO" id="dUr-0Z-JLw">
+                    <rect key="frame" x="63.5" y="421" width="248" height="30"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vcj-Rr-dWa">
+                            <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                            <state key="normal" title="&lt;"/>
+                            <connections>
+                                <action selector="obtainLastDataAction:" destination="-1" eventType="touchUpInside" id="mQq-UJ-Dd5"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2021-07-26" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jg5-9L-cbO">
+                            <rect key="frame" x="78" y="0.0" width="92" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gh8-4h-hVI">
+                            <rect key="frame" x="218" y="0.0" width="30" height="30"/>
+                            <state key="normal" title="&gt;"/>
+                            <connections>
+                                <action selector="obtainNextDataAction:" destination="-1" eventType="touchUpInside" id="QEa-cO-NX4"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="o1b-fC-IMR" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="120" id="1c3-9k-18P"/>
+                <constraint firstItem="dUr-0Z-JLw" firstAttribute="top" secondItem="wgQ-X1-LWm" secondAttribute="bottom" constant="50" id="8lm-IZ-2jg"/>
                 <constraint firstAttribute="trailing" secondItem="o1b-fC-IMR" secondAttribute="trailing" constant="40" id="Ewa-eg-1DF"/>
                 <constraint firstItem="sp0-Zs-hfz" firstAttribute="top" secondItem="o1b-fC-IMR" secondAttribute="bottom" constant="150" id="HQN-4F-pku"/>
                 <constraint firstItem="0g8-Qz-wwF" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Mdc-aT-B0X"/>
@@ -74,10 +101,11 @@
                 <constraint firstItem="wgQ-X1-LWm" firstAttribute="top" secondItem="0g8-Qz-wwF" secondAttribute="bottom" constant="130" id="UDy-4d-PdX"/>
                 <constraint firstItem="wgQ-X1-LWm" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="hIM-vy-WYE"/>
                 <constraint firstItem="o1b-fC-IMR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="40" id="rWb-ff-PWc"/>
+                <constraint firstItem="dUr-0Z-JLw" firstAttribute="centerX" secondItem="wgQ-X1-LWm" secondAttribute="centerX" id="sI2-Af-RPg"/>
                 <constraint firstItem="wgQ-X1-LWm" firstAttribute="height" secondItem="0g8-Qz-wwF" secondAttribute="height" id="u12-Cw-SNV"/>
                 <constraint firstItem="0g8-Qz-wwF" firstAttribute="top" secondItem="o1b-fC-IMR" secondAttribute="bottom" constant="40" id="yt3-KH-LT7"/>
             </constraints>
-            <point key="canvasLocation" x="26.5" y="52.5"/>
+            <point key="canvasLocation" x="26.399999999999999" y="51.724137931034484"/>
         </view>
     </objects>
 </document>

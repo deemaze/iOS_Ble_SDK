@@ -16,25 +16,55 @@ class VPTestOxygenController: UIViewController {
     @IBOutlet weak var testOxygenBtn: UIButton!
     @IBOutlet weak var testRateBtn: UIButton!
     
+    @IBOutlet weak var oxygenDateLabel: UILabel!
+    
+    // Graph to display oxygen data
+    var oxygenCurView = VPOxygenCurveView()
+    
+    // Index to the current day
+    var oxygenDayIndex = 0
+    
+    var viewHeight: CGFloat = 0.0
+    var screenWidth: CGFloat = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        let arr = VPDataBaseOperation.veepooSDKGetDeviceOxygenData(withDate: "2019-06-18", andTableID: VPBleCentralManage.sharedBleManager().peripheralModel.deviceAddress)
-        let arr = VPDataBaseOperation.veepooSDKGetDeviceOxygenData(withDate: "2020-05-27", andTableID: "FF:E4:71:43:BC:D9")
-        
-        let oxygenCurview = VPOxygenCurveView(vpOxygenCurveType:VPOxygenCurveTypeOxygen)
-        
-        oxygenCurview?.frame = CGRect(x: 0, y: 200, width: 300, height: 300)
-        
-        oxygenCurview?.oneDayOxygens = arr
-        
-        
-        view .addSubview(oxygenCurview!)
+        title = "SpO2"
         
         // Do any additional setup after loading the view.
+        viewHeight = self.view.bounds.size.height
+        screenWidth = UIScreen.main.bounds.width
+        
+        getOneDayOxygenData()
     }
-
+    
+    func getOneDayOxygenData() {
+        
+        oxygenCurView.removeFromSuperview()
+        
+        self.oxygenDateLabel.text = oxygenDayIndex.getOneDayDateString()
+        let arr = VPDataBaseOperation.veepooSDKGetDeviceOxygenData(withDate: self.oxygenDateLabel.text, andTableID: VPBleCentralManage.sharedBleManager().peripheralModel.deviceAddress)
+        //let arr = VPDataBaseOperation.veepooSDKGetDeviceOxygenData(withDate: "2020-05-27", andTableID: "FF:E4:71:43:BC:D9")
+        
+        oxygenCurView = VPOxygenCurveView(vpOxygenCurveType:VPOxygenCurveTypeOxygen)
+        
+        oxygenCurView.frame = CGRect(x: 0, y: viewHeight - 200, width: screenWidth, height: 300)
+        
+        oxygenCurView.oneDayOxygens = arr
+        
+        view.addSubview(oxygenCurView)
+    }
+    
+    @IBAction func obtainLastDataAction(_ sender: Any) {
+        oxygenDayIndex = oxygenDayIndex - 1
+        getOneDayOxygenData()
+    }
+    
+    @IBAction func obtainNextDataAction(_ sender: Any) {
+        oxygenDayIndex = oxygenDayIndex + 1
+        getOneDayOxygenData()
+    }
+    
     @IBAction func startTestOxygenAction(_ sender: UIButton) {
 //        sender.isSelected = !sender.isSelected
 //        VPBleCentralManage.sharedBleManager()
