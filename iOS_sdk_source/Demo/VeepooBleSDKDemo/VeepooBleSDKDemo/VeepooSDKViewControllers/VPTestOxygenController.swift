@@ -19,40 +19,40 @@ class VPTestOxygenController: UIViewController {
     @IBOutlet weak var oxygenDateLabel: UILabel!
     
     // Graph to display oxygen data
-    var oxygenCurview = VPOxygenCurveView()
+    var oxygenCurView = VPOxygenCurveView()
     
     // Index to the current day
     var oxygenDayIndex = 0
     
-    var y: CGFloat = 0.0
-    var width: CGFloat = 0.0
+    var viewHeight: CGFloat = 0.0
+    var screenWidth: CGFloat = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "SpO2"
         
         // Do any additional setup after loading the view.
-        y = self.view.bounds.size.height
-        width = UIScreen.main.bounds.width
+        viewHeight = self.view.bounds.size.height
+        screenWidth = UIScreen.main.bounds.width
         
         getOneDayOxygenData()
     }
     
     func getOneDayOxygenData() {
         
-        oxygenCurview.removeFromSuperview()
+        oxygenCurView.removeFromSuperview()
         
         self.oxygenDateLabel.text = oxygenDayIndex.getOneDayDateString()
         let arr = VPDataBaseOperation.veepooSDKGetDeviceOxygenData(withDate: self.oxygenDateLabel.text, andTableID: VPBleCentralManage.sharedBleManager().peripheralModel.deviceAddress)
         //let arr = VPDataBaseOperation.veepooSDKGetDeviceOxygenData(withDate: "2020-05-27", andTableID: "FF:E4:71:43:BC:D9")
         
-        oxygenCurview = VPOxygenCurveView(vpOxygenCurveType:VPOxygenCurveTypeOxygen)
+        oxygenCurView = VPOxygenCurveView(vpOxygenCurveType:VPOxygenCurveTypeOxygen)
         
-        oxygenCurview.frame = CGRect(x: 0, y: y - 200, width: width, height: 300)
+        oxygenCurView.frame = CGRect(x: 0, y: viewHeight - 200, width: screenWidth, height: 300)
         
-        oxygenCurview.oneDayOxygens = arr
+        oxygenCurView.oneDayOxygens = arr
         
-        view.addSubview(oxygenCurview)
+        view.addSubview(oxygenCurView)
     }
     
     @IBAction func obtainLastDataAction(_ sender: Any) {
