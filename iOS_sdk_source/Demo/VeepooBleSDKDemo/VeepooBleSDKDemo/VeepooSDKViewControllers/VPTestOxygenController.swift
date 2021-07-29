@@ -8,51 +8,55 @@
 
 import UIKit
 
-class VPTestOxygenController: UIViewController {
+class VPTestOxygenController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var averageOxygenValueLabel: UILabel!
     @IBOutlet weak var currentOxygenValueLabel: UILabel!
     @IBOutlet weak var currentRateValueLabel: UILabel!
     
     @IBOutlet weak var testOxygenBtn: UIButton!
     @IBOutlet weak var testRateBtn: UIButton!
     
+    @IBOutlet weak var testOxygenTableView: UITableView!
     @IBOutlet weak var oxygenDateLabel: UILabel!
     
-    // Graph to display oxygen data
-    var oxygenCurView = VPOxygenCurveView()
+    // Respiration rate for one day array
+    var oneDayOxygenArray: NSArray = []
     
     // Index to the current day
     var oxygenDayIndex = 0
     
-    var viewHeight: CGFloat = 0.0
-    var screenWidth: CGFloat = 0.0
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "SpO2"
-        
-        // Do any additional setup after loading the view.
-        viewHeight = self.view.bounds.size.height
-        screenWidth = UIScreen.main.bounds.width
-        
         getOneDayOxygenData()
     }
     
     func getOneDayOxygenData() {
         
-        oxygenCurView.removeFromSuperview()
-        
         self.oxygenDateLabel.text = oxygenDayIndex.getOneDayDateString()
-        let arr = VPDataBaseOperation.veepooSDKGetDeviceOxygenData(withDate: self.oxygenDateLabel.text, andTableID: VPBleCentralManage.sharedBleManager().peripheralModel.deviceAddress)
-        //let arr = VPDataBaseOperation.veepooSDKGetDeviceOxygenData(withDate: "2020-05-27", andTableID: "FF:E4:71:43:BC:D9")
+        let oxygenOneDayData = VPDataBaseOperation.veepooSDKGetDeviceOxygenData(withDate: self.oxygenDateLabel.text, andTableID: VPBleCentralManage.sharedBleManager().peripheralModel.deviceAddress)
         
-        oxygenCurView = VPOxygenCurveView(vpOxygenCurveType:VPOxygenCurveTypeOxygen)
+        // Analyse the oxygen data obtained from the device
+        let oxygenAnalysisArray = VPOxygenAnalysisModel(oneDayOxygens: oxygenOneDayData)
         
-        oxygenCurView.frame = CGRect(x: 0, y: viewHeight - 200, width: screenWidth, height: 300)
+        self.averageOxygenValueLabel.text = "Average blood oxygen : " + (oxygenAnalysisArray?.aveOxygenValue.description ?? "0") + "%"
         
-        oxygenCurView.oneDayOxygens = arr
+        // Return if no data for the date
+        guard (oxygenAnalysisArray?.parseOneDayDict) != nil else {
+            print("No respiration rate data for date \(self.oxygenDateLabel.text ?? oxygenDayIndex.getOneDayDateString())")
+            oneDayOxygenArray = []
+            testOxygenTableView.reloadData()
+            return
+        }
         
-        view.addSubview(oxygenCurView)
+        // Get and convert to array the respiration rate for one day
+        oneDayOxygenArray = (oxygenAnalysisArray?.parseOneDayDict["OxygenOneDayArray"]) as? NSArray ?? []
+
+        // Reverse the values to display the time order by the most recent
+        oneDayOxygenArray = oneDayOxygenArray.reversed() as NSArray
+
+        testOxygenTableView.reloadData()
     }
     
     @IBAction func obtainLastDataAction(_ sender: Any) {
@@ -66,15 +70,9 @@ class VPTestOxygenController: UIViewController {
     }
     
     @IBAction func startTestOxygenAction(_ sender: UIButton) {
-//        sender.isSelected = !sender.isSelected
-//        VPBleCentralManage.sharedBleManager()
-//            .peripheralManage.veepooSDKTestECGStart(sender.isSelected) { (state, progress1, model) in
-//
-//        }
-//
-//        return
-        
-        if VPBleCentralManage.sharedBleManager().peripheralModel.oxygenType == 0 {//先判断一下是否有这个功能
+
+        // First judge whether it has this function
+        if VPBleCentralManage.sharedBleManager().peripheralModel.oxygenType == 0 {
             _ = AppDelegate.showHUD(message: "The bracelet has no blood oxygen function", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
@@ -89,23 +87,23 @@ class VPTestOxygenController: UIViewController {
                 switch testOxygenState {
                 case .start:
                     _ = AppDelegate.showHUD(message: "Preparing for the test, please keep the correct posture", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
-                case .testing: //正在检测血氧，已经测出血氧值
-                    weakSelf.currentOxygenValueLabel.text = "Current blood oxygen level:" + String(oxygenValue) + "%"
-                case .notWear: //佩戴检测没有通过，测试已经结束
+                case .testing: //The blood oxygen is being tested, and the blood oxygen value has been measured
+                    weakSelf.currentOxygenValueLabel.text = "Current blood oxygen level: " + String(oxygenValue) + "%"
+                case .notWear: //The wearing test failed, the test has ended
                     _ = AppDelegate.showHUD(message: "Wearing test failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
-                case .deviceBusy: //设备正忙不能测试了，测试已经结束
+                case .deviceBusy: //The device is busy and cannot be tested, the test has ended
                     _ = AppDelegate.showHUD(message: "Device side is operating", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
-                case .over: //测试正常结束，人为结束
+                case .over: //The test ends normally and ends artificially
                     _ = AppDelegate.showHUD(message: "End of test", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
-                case .noFunction: //设备没有此功能
+                case .noFunction: //The device does not have this function
                     _ = AppDelegate.showHUD(message: "The device does not have this function", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
                     sender.isSelected = false
-                case .calibration: //校准中
+                case .calibration: //Calibrating
                     weakSelf.currentOxygenValueLabel.text = "Calibration progress:" + String(oxygenValue) + "%"
-                case .calibrationComplete: //校准完成
+                case .calibrationComplete: //Calibration is complete
                     weakSelf.currentOxygenValueLabel.text = "Calibration progress:" + String(oxygenValue) + "%"
                 default:
                     break
@@ -118,10 +116,11 @@ class VPTestOxygenController: UIViewController {
         }
     }
     
-    @IBAction func startTestRateAction(_ sender: UIButton) {//开始测试呼吸率
+    // Start testing the breathing rate
+    @IBAction func startTestRateAction(_ sender: UIButton) {
         var tbyte:[UInt8] = Array(repeating: 0x00, count: 20)
         VPBleCentralManage.sharedBleManager().peripheralModel.deviceFuctionDataTwo.copyBytes(to: &tbyte, count: tbyte.count)
-        if tbyte[7] != 1 {//先判断一下是否有这个功能
+        if tbyte[7] != 1 {// First judge whether it has this function
             _ = AppDelegate.showHUD(message: "The bracelet has no breath rate function", hudModel: MBProgressHUDModeText, showView: view)
             return
         }
@@ -132,24 +131,24 @@ class VPTestOxygenController: UIViewController {
                 switch testBreathingRateState {
                 case .start:
                     _ = AppDelegate.showHUD(message: "Preparing for the test, please keep the correct posture", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
-                case .testing: //正在检测呼吸率
+                case .testing: //Respiration rate being tested
                     weakSelf.currentRateValueLabel.text = "Test progress:" + String(testProgress) + "%"
-                case .notWear: //佩戴检测没有通过，测试已经结束
+                case .notWear: //The wearing test failed, the test has ended
                     weakSelf.currentOxygenValueLabel.text = "Wearing test failed"
                     sender.isSelected = false
-                case .deviceBusy: //设备正忙不能测试了，测试已经结束
+                case .deviceBusy: //The device is busy and cannot be tested, the test has ended
                     weakSelf.currentRateValueLabel.text = "Device side is operating"
                     sender.isSelected = false
-                case .over: //测试正常结束，人为结束
+                case .over: //The test ends normally and ends artificially
                     weakSelf.currentRateValueLabel.text = "End of test"
                     sender.isSelected = false
-                case .complete: //正常完成
+                case .complete: //Completed normally
                     weakSelf.currentRateValueLabel.text = "Respiration rate:" + String(testValue) + "%" + "Times/min"
                     sender.isSelected = false
-                case .failure: //测试无效
+                case .failure: //Invalid test
                     weakSelf.currentRateValueLabel.text = "Invalid test"
                     sender.isSelected = false
-                case .noFunction: //设备没有此功能
+                case .noFunction: //The device does not have this function
                     weakSelf.currentRateValueLabel.text = "The device does not have this function"
                     sender.isSelected = false
                 }
@@ -161,8 +160,59 @@ class VPTestOxygenController: UIViewController {
         }
     }
     
-    deinit {//销毁的时候关闭血氧测试
-        VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKTestOxygenStart(false, testResult: nil)
+    //MARK: tableView
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return oneDayOxygenArray.count
     }
 
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
+        if cell == nil {
+            cell = UITableViewCell(style: .value1, reuseIdentifier: "Cell")
+        }
+        
+        // Get the respiration rate values
+        let oxygenRate = oneDayOxygenArray[indexPath.row] as? NSDictionary
+        
+        // Get the oxygen rate time
+        let timeString = oxygenRate?["Time"] as! String
+        
+        // Get the next time in function of the timeString
+        let nextTime = getNextTime(currentTime: timeString)
+        
+        cell?.textLabel?.text = timeString + "-" + nextTime
+        cell?.detailTextLabel?.text = "Avg(\(oxygenRate?["OxygenAverageValue"] as? String ?? ""))"
+        
+        return cell!
+    }
+    
+    private func getNextTime(currentTime: String) -> String {
+
+        // Split the time string to get the hours and minutes
+        let split = currentTime.components(separatedBy: ":")
+
+        var hours = Int(split[0])!
+        let minutes = Int(split[1])!
+
+        // Add 10 minutes to get the next interval
+        var nextMinutes = minutes + 10
+
+        // In case of nextMinutes == 60, increment one hour and reset the minutes to 0
+        if nextMinutes == 60 {
+            hours += 1
+            nextMinutes = 0
+
+            return "0\(hours):0\(nextMinutes)"
+        }
+        return "0\(hours):\(nextMinutes)"
+    }
+    
+    // Turn off the blood oxygen test when it is destroyed
+    deinit {
+        VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKTestOxygenStart(false, testResult: nil)
+    }
 }
