@@ -57,6 +57,8 @@ class VPTestRespirationRateController: UIViewController,UITableViewDelegate, UIT
         // Return if no data for the date
         guard (oxygenAnalysisArray?.parseOneDayDict) != nil else {
             print("No respiration rate data for date \(self.testRespirationCurrentDateLabel.text ?? dayIndex.getOneDayDateString())")
+            oneDayRespirationRateArray = []
+            testRespirationTableView.reloadData()
             return
         }
         
