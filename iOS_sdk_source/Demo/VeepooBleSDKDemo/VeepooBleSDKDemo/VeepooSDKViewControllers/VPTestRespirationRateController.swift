@@ -10,88 +10,63 @@ import UIKit
 
 class VPTestRespirationRateController: UIViewController,UITableViewDelegate, UITableViewDataSource {
 
-    @IBOutlet weak var testHeartTableView: UITableView!
+    @IBOutlet weak var testRespirationTableView: UITableView!
     
-    @IBOutlet weak var testHeartCurrentDateLabel: UILabel!
+    @IBOutlet weak var testRespirationCurrentDateLabel: UILabel!
     
-    @IBOutlet weak var currentHeartValueLabel: UILabel!
+    @IBOutlet weak var avgRespirationRateLabel: UILabel!
+    @IBOutlet weak var minRespirationRateLabel: UILabel!
+    @IBOutlet weak var maxRespirationRateLabel: UILabel!
     
+    // Respiration rate for one day array
+    var oneDayRespirationRateArray: NSArray = []
     var dayIndex = 0
-    
-    var heartDict = [String : [String: String]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        title = "心率"
         title = "Respiration Rate"
-        obtainOneDayHeartData()
-        // Do any additional setup after loading the view.
+        obtainOneDayRespirationData()
     }
 
-    @IBAction func selectHeartLastDateAction(_ sender: UIButton) {//上一天
+    @IBAction func selectRespirationLastDateAction(_ sender: UIButton) {
         dayIndex = dayIndex - 1
-        obtainOneDayHeartData()
-        
+        obtainOneDayRespirationData()
     }
     
-    @IBAction func selectHeartNextDateAction(_ sender: UIButton) {//下一天
+    @IBAction func selectRespirationNextDateAction(_ sender: UIButton) {
         dayIndex = dayIndex + 1
-        obtainOneDayHeartData()
+        obtainOneDayRespirationData()
     }
     
-    
-    @IBAction func startTestHeartAction(_ sender: UIButton) {//测试心率,测试过程中，开发者要考虑一下，蓝牙中断的情况，细节的逻辑要考虑清楚
-        sender.isSelected = !sender.isSelected
-        if sender.isSelected {
-//            currentHeartValueLabel.text = "当前心率值: "
-            currentHeartValueLabel.text = "Current heart rate: "
-        }
-        unowned let weakSelf = self
-        VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKTestHeartStart(sender.isSelected) { (testHeartState, heartValue) in
-            
-            if  sender.isSelected {
-                switch testHeartState {
-                case .start: //测试心率过程中的状态变化 //开始检测心率，还没有测出结果
-//                    _ = AppDelegate.showHUD(message: "正在做测试准备，请保持正确姿势", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
-                    _ = AppDelegate.showHUD(message: "Preparing for the test, please keep the correct posture", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
-                case .testing: //正在检测心率，已经测出心率值
-//                    weakSelf.currentHeartValueLabel.text = "当前心率值:" + String(heartValue)
-                    weakSelf.currentHeartValueLabel.text = "Current heart rate:" + String(heartValue)
-                case .notWear: //佩戴检测没有通过，测试已经结束
-//                    _ = AppDelegate.showHUD(message: "佩戴检测未通过", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
-                    _ = AppDelegate.showHUD(message: "Wearing test failed", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
-                    sender.isSelected = false
-                case .deviceBusy: //设备正忙不能测试了，测试已经结束
-//                    _ = AppDelegate.showHUD(message: "设备端正在操作", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
-                    _ = AppDelegate.showHUD(message: "Device side is operating", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
-                    sender.isSelected = false
-                case .over: //测试正常结束，人为结束
-//                    _ = AppDelegate.showHUD(message: "测试结束", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
-                    _ = AppDelegate.showHUD(message: "End of test", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
-                    sender.isSelected = false
-                }
-            }else {
-                if testHeartState == .over {
-//                    _ = AppDelegate.showHUD(message: "测试结束", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
-                    _ = AppDelegate.showHUD(message: "End of test", hudModel: MBProgressHUDModeText, showView: weakSelf.view)
-                }
-            }
+    func obtainOneDayRespirationData() {
+        
+        // Get the date string based of dayIndex
+        self.testRespirationCurrentDateLabel.text = dayIndex.getOneDayDateString()
+        
+        // Get device oxygen data for a day
+        let oxygenOneDayData = VPDataBaseOperation.veepooSDKGetDeviceOxygenData(withDate: self.testRespirationCurrentDateLabel.text, andTableID: VPBleCentralManage.sharedBleManager().peripheralModel.deviceAddress)
+        
+        // Analyse the oxygen data obtained from the device
+        let oxygenAnalysisArray = VPOxygenAnalysisModel(oneDayOxygens: oxygenOneDayData)
+        
+        // Update the labels with the obtained values from the model
+        self.avgRespirationRateLabel.text = "Respiration rate avg : " + (oxygenAnalysisArray?.aveRespirationRate.description ?? "0")
+        self.minRespirationRateLabel.text = "Respiration rate min : " + (oxygenAnalysisArray?.minRespirationRate.description ?? "0")
+        self.maxRespirationRateLabel.text = "Respiration rate max : " + (oxygenAnalysisArray?.maxRespirationRate.description ?? "0")
+        
+        // Return if no data for the date
+        guard (oxygenAnalysisArray?.parseOneDayDict) != nil else {
+            print("No respiration rate data for date \(self.testRespirationCurrentDateLabel.text ?? dayIndex.getOneDayDateString())")
+            return
         }
         
-    }
-    
-    
-    /// 获取某一天的心率历史数据
-    func obtainOneDayHeartData() {
-        self.testHeartCurrentDateLabel.text = dayIndex.getOneDayDateString()
-        let heartOnedayData = VPDataBaseOperation.veepooSDKGetOriginalChangeHalfHourData(withDate: self.testHeartCurrentDateLabel.text, andTableID: VPBleCentralManage.sharedBleManager().peripheralModel.deviceAddress)
+        // Get and convert to array the respiration rate for one day
+        oneDayRespirationRateArray = (oxygenAnalysisArray?.parseOneDayDict["VPRespirationRateOneDayArrayKey"]) as? NSArray ?? []
         
-        if heartOnedayData == nil {
-            heartDict = [String : [String: String]]()
-        }else {
-            heartDict = heartOnedayData as! [String : [String : String]]
-        }
-        testHeartTableView.reloadData()
+        // Reverse the values to display the time order by the most recent
+        oneDayRespirationRateArray = oneDayRespirationRateArray.reversed() as NSArray
+                
+        testRespirationTableView.reloadData()
     }
     
     //MARK: tableView的代理
@@ -100,8 +75,7 @@ class VPTestRespirationRateController: UIViewController,UITableViewDelegate, UIT
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return heartDict.keys.count
+        return oneDayRespirationRateArray.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -110,35 +84,45 @@ class VPTestRespirationRateController: UIViewController,UITableViewDelegate, UIT
             cell = UITableViewCell(style: .value1, reuseIdentifier: "Cell")
         }
         
-        let allkeys = Array(heartDict.keys)
+        // Get the respiration rate values
+        let respirationRate = oneDayRespirationRateArray[indexPath.row] as? NSDictionary
         
-        let keys = allkeys.sorted(by: { (n1: String, n2: String) -> Bool in
-            //进行从小到大的排序
-            return n2 < n1
-        })
+        // Get the respiration rate time
+        let timeString = respirationRate?["Time"] as! String
         
-        cell?.textLabel?.text = keys[indexPath.row]
+        // Get the next time in function of the timeString
+        let nextTime = getNextTime(currentTime: timeString)
         
-        let subDict = heartDict[(cell?.textLabel?.text)!]
-        
-        guard let subHeartDict = subDict else {
-            return cell!
-        }
-        
-//        cell?.detailTextLabel?.text = "心率" + subHeartDict["heartValue"]! + "/运动量" + subHeartDict["sportValue"]! + "/步数" + subHeartDict["stepValue"]! + "/距离" + subHeartDict["disValue"]! + "/卡路里" + subHeartDict["calValue"]!
-        cell?.detailTextLabel?.text = "Heart rate" + subHeartDict["heartValue"]! + "/Amount of exercise" + subHeartDict["sportValue"]! + "/Step count" + subHeartDict["stepValue"]! + "/distance" + subHeartDict["disValue"]! + "/Calories" + subHeartDict["calValue"]!
+        cell?.textLabel?.text = timeString + "-" + nextTime
+        cell?.detailTextLabel?.text = "Avg(\(respirationRate?["VPRespirationRateAverageValueKey"] as? String ?? ""))"
         cell?.detailTextLabel?.adjustsFontSizeToFitWidth = true
         
         return cell!
     }
     
-    deinit {//销毁的时候关闭心率测试
-        VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKTestHeartStart(false, testResult: nil)
+    private func getNextTime(currentTime: String) -> String {
+        
+        // Split the time string to get the hours and minutes
+        let split = currentTime.components(separatedBy: ":")
+        
+        var hours = Int(split[0])!
+        let minutes = Int(split[1])!
+        
+        // Add 10 minutes to get the next interval
+        var nextMinutes = minutes + 10
+        
+        // In case of nextMinutes == 60, increment one hour and reset the minutes to 0
+        if nextMinutes == 60 {
+            hours += 1
+            nextMinutes = 0
+            
+            return "0\(hours):0\(nextMinutes)"
+        }
+        return "0\(hours):\(nextMinutes)"
+    }
+    
+    // Turn off the breathing rate test when it is destroyed
+    deinit {
+        VPBleCentralManage.sharedBleManager().peripheralManage.veepooSDKTestBreathingRateStart(false, testResult: nil)
     }
 }
-
-
-
-
-
-
